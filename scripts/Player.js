@@ -16,6 +16,7 @@ Player.prototype.setInitialPlayerPosition = (spriteFigure) => {
     spriteFigure.width = 50;
     spriteFigure.position.x = 0;
     spriteFigure.position.y = Settings.CANVAS_HEIGHT - spriteFigure.height - 5;
+    spriteFigure.vx = 0;
 };
 
 Player.prototype.listen = function () {
@@ -25,62 +26,21 @@ Player.prototype.listen = function () {
 
     left.press = () => {
         this.x -= 5;
+        this.vx = -Settings.PLAYER_SPEED;
     };
     right.press = () => {
-        // this.x += 5;
-        this.vx = 0.5;
+        this.x += 5;
+        this.vx = Settings.PLAYER_SPEED;
     };
     space.press = () => {
+        console.log("Bullet fired");
         //new Bullet();
     };
-    //   right.release = () => {
-    //     if (!left.isDown && cat.vy === 0) {
-    //       cat.vx = 0;
-    //     }
-    //   };
+
+    left.release = () => {
+        this.vx = 0;
+    };
+    right.release = () => {
+        this.vx = 0;
+    };
 };
-
-//----------------------------------------------------
-function keyboard(value) {
-    let key = {};
-    key.value = value;
-    key.isDown = false;
-    key.isUp = true;
-    key.press = undefined;
-    key.release = undefined;
-
-    //The `downHandler`
-    key.downHandler = (event) => {
-        if (event.key === key.value) {
-            if (key.isUp && key.press) key.press();
-            key.isDown = true;
-            key.isUp = false;
-            event.preventDefault();
-        }
-    };
-
-    //The `upHandler`
-    key.upHandler = (event) => {
-        if (event.key === key.value) {
-            if (key.isDown && key.release) key.release();
-            key.isDown = false;
-            key.isUp = true;
-            event.preventDefault();
-        }
-    };
-
-    //Attach event listeners
-    const downListener = key.downHandler; //.bind(key);
-    const upListener = key.upHandler; //.bind(key);
-
-    window.addEventListener("keydown", downListener, false);
-    window.addEventListener("keyup", upListener, false);
-
-    // Detach event listeners
-    key.unsubscribe = () => {
-        window.removeEventListener("keydown", downListener);
-        window.removeEventListener("keyup", upListener);
-    };
-
-    return key;
-}
