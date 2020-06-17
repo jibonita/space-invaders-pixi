@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+    <title>Space Invaders Game</title>
+    <style>
+        body {
+            background-color: #dbd6d6;
+        }
+
+        canvas {
+            background-color: #999999;
+            display: block;
+            margin: 0 auto;
+            /* width: 500px;
+            height: 300px; */
+        }
+    </style>
+</head>
+
+<body onload="init();">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- <script src="./scripts/lib/pixi.min.js.map"></script> -->
+    <script src="./scripts/lib/pixi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TimelineMax.min.js"></script>
+
+    <script src="./scripts/Settings.js"></script>
+    <script src="./scripts/Player.js"></script>
+    <script src="./scripts/Bullet.js"></script>
+    <script src="./scripts/GameScene.js"></script>
+    <script src="./scripts/WelcomeScene.js"></script>
+    <script src="Main.js"></script>
+    <script>
+        function init() {
+            main = new Main();
+        }
+    </script>
+</body>
+
+</html>

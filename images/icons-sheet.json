@@ -1,0 +1,92 @@
+{"frames": {
+
+"black-alien.png":
+{
+	"frame": {"x":43,"y":0,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"blue-alien.png":
+{
+	"frame": {"x":0,"y":50,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"green-alien-long.png":
+{
+	"frame": {"x":0,"y":200,"w":59,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":59,"h":50},
+	"sourceSize": {"w":59,"h":50}
+},
+"green-alien.png":
+{
+	"frame": {"x":50,"y":50,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"green2-alien.png":
+{
+	"frame": {"x":0,"y":100,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"bullet.png":
+{
+	"frame": {"x":0,"y":0,"w":43,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":43,"h":50},
+	"sourceSize": {"w":43,"h":50}
+},
+"player.png":
+{
+	"frame": {"x":0,"y":250,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"red-alien.png":
+{
+	"frame": {"x":50,"y":100,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"violet-alien.png":
+{
+	"frame": {"x":0,"y":150,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"yellow-alien.png":
+{
+	"frame": {"x":50,"y":150,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "icons-sheet.png",
+	"format": "RGBA8888",
+	"size": {"w":100,"h":350},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:35fec73b85880dd4bba764f787c37a2d:7a61a87d8bea548b8d1edbeab414667a:ea0da9cb090add70e674a867ab2a0033$"
+}
+}
