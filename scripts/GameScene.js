@@ -16,18 +16,9 @@ GameScene.prototype.loadPlayersShips = function () {
         onComplete: () => {
             ticker.add(this.move.bind(this, this.player));
 
-            const bullet = new Bullet(this);
-            bullet.position.x =
-                (this.player.width - bullet.width) / 2 + this.player.x;
-            bullet.position.y =
-                Settings.CANVAS_HEIGHT - this.player.height - bullet.height - 5;
+            this.getSampleBulletFromPlayer();
 
-            TweenMax.to(bullet, 1, {
-                y: -bullet.height,
-                onComplete: () => {
-                    //console.log("Bullet finished trayectory");
-                },
-            });
+            this.getSampleBulletFromTop();
         },
     });
 };
@@ -48,3 +39,55 @@ GameScene.prototype.move = (obj) => {
     // console.log(obj.position.x);
     // console.log(obj.x);
 };
+
+/// helpers
+
+// function getSampleBulletFromPlayer() {
+GameScene.prototype.getSampleBulletFromPlayer = function () {
+    const bullet = new Bullet(this);
+    bullet.position.x = (this.player.width - bullet.width) / 2 + this.player.x;
+    bullet.position.y =
+        Settings.CANVAS_HEIGHT - this.player.height - bullet.height - 5;
+
+    TweenMax.to(bullet, 1, {
+        y: -bullet.height,
+        onComplete: () => {
+            //console.log("Bullet finished trajectory");
+        },
+    });
+};
+
+GameScene.prototype.getSampleBulletFromTop = function () {
+    const bullet = new Bullet(this);
+    bullet.position.x = (this.player.width - bullet.width) / 2 + this.player.x;
+    bullet.position.y = Settings.CANVAS_HEIGHT - bullet.height;
+
+    // when alien bullet
+    bullet.anchor.set(1);
+    bullet.rotation = Math.PI;
+
+    const tm = TweenMax.from(bullet, 1, {
+        y: -bullet.height,
+        onUpdate: () => {
+            if (checkCollision(tm.target, this.player)) {
+                console.log("Boom");
+                this.removeChild(tm.target);
+                tm.kill();
+            }
+        },
+        onComplete: () => {
+            this.removeChild(tm.target);
+            console.log("Bullet finished trajectory");
+        },
+    });
+};
+
+function checkCollision(missile, target) {
+    const [mStart, mEnd] = [missile.x, missile.x + missile.width];
+    const [tStart, tEnd] = [target.x, target.x + target.width];
+
+    return (
+        missile.y + missile.height > target.y &&
+        ((mStart > tStart && mStart < tEnd) || (mEnd > tStart && mEnd < tEnd))
+    );
+}
