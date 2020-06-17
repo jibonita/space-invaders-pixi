@@ -8,13 +8,26 @@ function GameScene(stage) {
 GameScene.prototype = Object.create(PIXI.Container.prototype);
 
 GameScene.prototype.loadPlayersShips = function () {
-    this.figure = new Player(this);
+    this.player = new Player(this);
 
-    TweenMax.to(this.figure, 1, {
+    TweenMax.to(this.player, 1, {
         x: Settings.PLAYER_INITIAL_POSITION,
         ease: Power1.easeIn,
         onComplete: () => {
-            ticker.add(this.move.bind(this, this.figure));
+            ticker.add(this.move.bind(this, this.player));
+
+            const bullet = new Bullet(this);
+            bullet.position.x =
+                (this.player.width - bullet.width) / 2 + this.player.x;
+            bullet.position.y =
+                Settings.CANVAS_HEIGHT - this.player.height - bullet.height - 5;
+
+            TweenMax.to(bullet, 1, {
+                y: -bullet.height,
+                onComplete: () => {
+                    //console.log("Bullet finished trayectory");
+                },
+            });
         },
     });
 };

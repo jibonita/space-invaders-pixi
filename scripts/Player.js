@@ -41,7 +41,18 @@ Player.prototype.listen = function () {
     let space = keyboard(" ");
 
     space.press = () => {
-        console.log("Bullet fired");
-        //new Bullet();
+        // console.log("Bullet fired");
+
+        const bullet = new Bullet(this.parent);
+        bullet.position.x = (this.width - bullet.width) / 2 + this.x;
+        bullet.position.y =
+            Settings.CANVAS_HEIGHT - this.height - bullet.height - 5;
+
+        TweenMax.to(bullet, 1, {
+            y: -bullet.height,
+            onComplete: () => {
+                console.log("Bullet finished trayectory");
+            },
+        });
     };
 };
