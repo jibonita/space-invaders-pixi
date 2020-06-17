@@ -19,8 +19,11 @@ function Main() {
 }
 
 const ticker = new PIXI.ticker.Ticker();
-// ticker.stop();
-// ticker.start();
+ticker.stop();
+// ticker.add((delta) => {
+//   console.log("delta:", delta);
+// });
+ticker.start();
 
 Main.prototype.update = function (delta) {
     if (this.gameScene) {

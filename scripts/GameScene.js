@@ -15,7 +15,6 @@ GameScene.prototype.loadPlayersShips = function () {
         ease: Power1.easeIn,
         onComplete: () => {
             ticker.add(this.move.bind(this, this.figure));
-            // ticker.add(() => { this.move(this.figure); });
         },
     });
 };
