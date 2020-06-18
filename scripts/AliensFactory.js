@@ -27,34 +27,11 @@ AliensFactory.prototype.fillAliens = function () {
   for (let i = 0; i < this.itemsPerRow; i++) {
     this.children[i].canShoot = true;
   }
-  const shooters = this.children.filter((a) => a.canShoot);
-  console.log(shooters);
+  this.displayShooters();
 
-  //   setTimeout(() => {
-  //     this.addAliensLine();
-  //     setTimeout(() => {
-  //       this.addAliensLine();
-  //       setTimeout(() => {
-  //         this.addAliensLine();
-  //         setTimeout(() => {
-  //           this.addAliensLine();
-  //           setTimeout(() => {
-  //             this.addAliensLine();
-  //             setTimeout(() => {
-  //               this.addAliensLine();
-  //               setTimeout(() => {
-  //                 this.addAliensLine();
-  //                 // for (let i = 0; i < 5; i++) {
-  //                 //   this.removeChildAt(0);
-  //                 // }
-  //                 // console.log(this.getBounds());
-  //               }, 2000);
-  //             }, 2000);
-  //           }, 2000);
-  //         }, 2000);
-  //       }, 2000);
-  //     }, 2000);
-  //   }, 2000);
+  setTimeout(() => {
+    this.deleteAlien();
+  }, 2000);
 
   //   const tm = TweenMax.fromTo(
   //     this,
@@ -79,10 +56,10 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
   return alien;
 };
 
+// ** method addAliensLine is not necessary in the game logic for the moment
 AliensFactory.prototype.addAliensLine = function () {
   TweenMax.staggerTo(this.children, 0.5, {
     y: `+=${Settings.ALIEN_VERTICAL_MARGIN}`,
-    onCompleteAll: () => {},
   });
 
   for (let i = 0; i < this.itemsPerRow; i++) {
@@ -93,14 +70,27 @@ AliensFactory.prototype.addAliensLine = function () {
   this.updateActiveLineColorIndex();
 };
 
-AliensFactory.prototype.deleteAlien = function () {};
+AliensFactory.prototype.deleteAlien = function (hitIndex) {
+  const child = this.getChildAt(hitIndex);
+  this.removeChild(child);
 
-AliensFactory.prototype.updateActiveLineColorIndex = function () {
+  const aliensAboveHit = this.children.filter((elem) => elem.x === child.x);
+  if (aliensAboveHit.length) {
+    aliensAboveHit[0].canShoot = true;
+  }
+};
+
+updateActiveLineColorIndex = function () {
   this.activeLineColorIndex =
     (this.activeLineColorIndex + 1) % Settings.AVAILABLE_ALIEN_PATTERNS;
 };
 
 // ----- helpers
+AliensFactory.prototype.displayShooters = function () {
+  const shooters = this.children.filter((a) => a.canShoot);
+  console.log(...shooters.map((a) => a.texture.textureCacheIds));
+};
+
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
