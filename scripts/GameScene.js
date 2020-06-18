@@ -12,7 +12,7 @@ GameScene.prototype.loadPlayersShips = function () {
 
   this.invaders = new AliensFactory(this);
 
-  //   this.initPlayerPosition();
+  this.initPlayerPosition();
 };
 
 GameScene.prototype.move = (obj) => {
@@ -41,7 +41,7 @@ GameScene.prototype.initPlayerPosition = function () {
 
       this.getSampleBulletFromPlayer();
 
-      this.getSampleBulletFromTop();
+      //  this.getSampleBulletFromTop();
     },
   });
 };
@@ -62,12 +62,13 @@ GameScene.prototype.getSampleBulletFromPlayer = function () {
   });
 };
 
+// ** tests use only
+/*
 GameScene.prototype.getSampleBulletFromTop = function () {
   const bullet = new Bullet(this);
   bullet.position.x = (this.player.width - bullet.width) / 2 + this.player.x;
   bullet.position.y = Settings.CANVAS_HEIGHT - bullet.height;
 
-  // when alien bullet
   bullet.anchor.set(1);
   bullet.rotation = Math.PI;
 
@@ -86,7 +87,7 @@ GameScene.prototype.getSampleBulletFromTop = function () {
     },
   });
 };
-
+*/
 function checkCollision(missile, target) {
   const [mStart, mEnd] = [missile.x, missile.x + missile.width];
   const [tStart, tEnd] = [target.x, target.x + target.width];
