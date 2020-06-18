@@ -51,7 +51,7 @@ Player.prototype.listen = function () {
         TweenMax.to(bullet, 1, {
             y: -bullet.height,
             onComplete: () => {
-                console.log("Bullet finished trayectory");
+                console.log("Bullet finished trajectory");
             },
         });
     };

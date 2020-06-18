@@ -7,3 +7,4 @@ Settings.CANVAS_HEIGHT = 500;
 Settings.SPRITESHEET = "./images/icons-sheet.json";
 Settings.PLAYER_INITIAL_POSITION = 50;
 Settings.PLAYER_SPEED = 10.7;
+Settings.ALIEN_MARGIN = 30;

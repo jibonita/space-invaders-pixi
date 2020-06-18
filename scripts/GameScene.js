@@ -8,19 +8,11 @@ function GameScene(stage) {
 GameScene.prototype = Object.create(PIXI.Container.prototype);
 
 GameScene.prototype.loadPlayersShips = function () {
-    this.player = new Player(this);
+    // this.player = new Player(this);
 
-    TweenMax.to(this.player, 1, {
-        x: Settings.PLAYER_INITIAL_POSITION,
-        ease: Power1.easeIn,
-        onComplete: () => {
-            ticker.add(this.move.bind(this, this.player));
+    this.invaders = new AliensFactory(this);
 
-            this.getSampleBulletFromPlayer();
-
-            this.getSampleBulletFromTop();
-        },
-    });
+    //   this.initPlayerPosition();
 };
 
 GameScene.prototype.move = (obj) => {
@@ -40,6 +32,19 @@ GameScene.prototype.move = (obj) => {
     // console.log(obj.x);
 };
 
+GameScene.prototype.initPlayerPosition = function () {
+    TweenMax.to(this.player, 1, {
+        x: Settings.PLAYER_INITIAL_POSITION,
+        ease: Power1.easeIn,
+        onComplete: () => {
+            ticker.add(this.move.bind(this, this.player));
+
+            this.getSampleBulletFromPlayer();
+
+            this.getSampleBulletFromTop();
+        },
+    });
+};
 /// helpers
 
 // function getSampleBulletFromPlayer() {
