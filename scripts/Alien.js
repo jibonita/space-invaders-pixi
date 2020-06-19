@@ -1,15 +1,19 @@
 function Alien(stage, index) {
-    const texture = PIXI.utils.TextureCache[`alien${index}.png`];
-    PIXI.Sprite.call(this, texture);
-    stage.addChild(this);
+  const texture = PIXI.utils.TextureCache[`alien${index}.png`];
+  PIXI.Sprite.call(this, texture);
+  stage.addChild(this);
 
-    this.setInitialState();
+  this.setInitialState();
 }
 
 Alien.prototype = Object.create(PIXI.Sprite.prototype);
 
 Alien.prototype.setInitialState = function () {
-    this.scale.set(0.5);
-    this.vx = 0;
-    this.canShoot = false;
+  this.scale.set(0.5);
+  this.vx = 0;
+  this.canShoot = false;
+};
+
+Alien.prototype.imageName = function () {
+  return this.texture.textureCacheIds;
 };

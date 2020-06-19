@@ -49,17 +49,18 @@ GameScene.prototype.initPlayerPosition = function () {
 
 // function getSampleBulletFromPlayer() {
 GameScene.prototype.getSampleBulletFromPlayer = function () {
-  const bullet = new Bullet(this);
-  bullet.position.x = (this.player.width - bullet.width) / 2 + this.player.x;
-  bullet.position.y =
-    Settings.CANVAS_HEIGHT - this.player.height - bullet.height - 5;
+  this.player.fireBullet(this.player.createBullet());
+  // const bullet = new Bullet(this);
+  // bullet.position.x = (this.player.width - bullet.width) / 2 + this.player.x;
+  // bullet.position.y =
+  //   Settings.CANVAS_HEIGHT - this.player.height - bullet.height - 5;
 
-  TweenMax.to(bullet, 1, {
-    y: -bullet.height,
-    onComplete: () => {
-      //console.log("Bullet finished trajectory");
-    },
-  });
+  // TweenMax.to(bullet, 1, {
+  //   y: -bullet.height,
+  //   onComplete: () => {
+  //     //console.log("Bullet finished trajectory");
+  //   },
+  // });
 };
 
 // ** tests use only
@@ -105,5 +106,23 @@ function checkCollision(missile, target) {
 
   return (
     mStartX < tEndX && mEndX > tStartX && mStartY < tEndY && mEndY > tStartY
+  );
+}
+
+function checkCollisionOLD(missile, target) {
+  const [mStart, mEnd] = [missile.x, missile.x + missile.width];
+  const [tStart, tEnd] = [target.x, target.x + target.width];
+
+  console.log([mStart, mEnd] + " -- " + [tStart, tEnd]);
+
+  console.log(mStart > tStart && mStart < tEnd);
+  console.log(mEnd > tStart && mEnd < tEnd);
+  // console.log(
+  //   (mStart > tStart && mStart < tEnd) || (mEnd > tStart && mEnd < tEnd)
+  // );
+
+  return (
+    missile.y + missile.height > target.y &&
+    ((mStart > tStart && mStart < tEnd) || (mEnd > tStart && mEnd < tEnd))
   );
 }

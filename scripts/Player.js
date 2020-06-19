@@ -1,58 +1,104 @@
 function Player(stage) {
-    const texture = PIXI.utils.TextureCache["player.png"];
-    PIXI.Sprite.call(this, texture);
-    stage.addChild(this);
+  const texture = PIXI.utils.TextureCache["player.png"];
+  PIXI.Sprite.call(this, texture);
+  stage.addChild(this);
 
-    this.setInitialPlayerPosition();
+  this.setInitialPlayerPosition();
 
-    this.listen();
+  this.listen();
 }
 
 Player.prototype = Object.create(PIXI.Sprite.prototype);
 
 Player.prototype.setInitialPlayerPosition = function () {
-    this.height = 50;
-    this.width = 50;
-    this.position.x = 0;
-    this.position.y = Settings.CANVAS_HEIGHT - this.height - 5;
-    this.vx = 0;
+  this.height = 50;
+  this.width = 50;
+  this.position.x = 0;
+  this.position.y = Settings.CANVAS_HEIGHT - this.height - 5;
+  this.vx = 0;
 };
 
 Player.prototype.listen = function () {
-    // this.listenKey('ArrowLeft');
-    // this.listenKey('ArrowRight');
+  // this.listenKey('ArrowLeft');
+  // this.listenKey('ArrowRight');
 
-    let left = keyboard("ArrowLeft");
-    left.press = () => {
-        this.vx = -Settings.PLAYER_SPEED;
-    };
-    left.release = () => {
-        this.vx = 0;
-    };
+  let left = keyboard("ArrowLeft");
+  left.press = () => {
+    this.vx = -Settings.PLAYER_SPEED;
+  };
+  left.release = () => {
+    this.vx = 0;
+  };
 
-    let right = keyboard("ArrowRight");
-    right.press = () => {
-        this.vx = Settings.PLAYER_SPEED;
-    };
-    right.release = () => {
-        this.vx = 0;
-    };
+  let right = keyboard("ArrowRight");
+  right.press = () => {
+    this.vx = Settings.PLAYER_SPEED;
+  };
+  right.release = () => {
+    this.vx = 0;
+  };
 
-    let space = keyboard(" ");
+  let space = keyboard(" ");
 
-    space.press = () => {
-        // console.log("Bullet fired");
+  space.press = () => {
+    // console.log("Bullet fired");
 
-        const bullet = new Bullet(this.parent);
-        bullet.position.x = (this.width - bullet.width) / 2 + this.x;
-        bullet.position.y =
-            Settings.CANVAS_HEIGHT - this.height - bullet.height - 5;
+    this.fireBullet(this.createBullet());
 
-        TweenMax.to(bullet, 1, {
-            y: -bullet.height,
-            onComplete: () => {
-                console.log("Bullet finished trajectory");
-            },
-        });
-    };
+    // const bullet = new Bullet(this.parent);
+    // bullet.position.x = (this.width - bullet.width) / 2 + this.x;
+    // bullet.position.y =
+    //   Settings.CANVAS_HEIGHT - this.height - bullet.height - 5;
+
+    // const tm = TweenMax.to(bullet, 1, {
+    //   y: -bullet.height,
+    //   onUpdate: () => {
+    //     // for each shooting alien check collision with bullet
+    //     // ......
+    //     console.log(this.parent);
+    //   },
+    //   onComplete: () => {
+    //     console.log("Player bullet finished trajectory");
+    //   },
+    // });
+  };
+};
+
+Player.prototype.createBullet = function (alien) {
+  // this.x = 92.80000000000001;
+
+  const bullet = new Bullet(this.parent);
+  bullet.position.x = (this.width - bullet.width) / 2 + this.x;
+  bullet.position.y = Settings.CANVAS_HEIGHT - this.height - bullet.height - 5;
+
+  return bullet;
+};
+
+Player.prototype.fireBullet = function (bullet) {
+  let count = 0;
+  const tm = TweenMax.to(bullet, 1, {
+    y: -bullet.height,
+    onUpdate: () => {
+      count++;
+      // for each shooting alien check collision with bullet
+      // ......
+      const aliensToKill = this.parent.invaders.getShooters();
+      aliensToKill.some((alien) => {
+        const isCollision = checkCollision(bullet, alien);
+
+        if (isCollision) {
+          this.parent.invaders.deleteAlien(alien);
+          bullet.parent.removeChild(bullet);
+          tm.kill();
+        }
+
+        return isCollision;
+      });
+    },
+    onComplete: () => {
+      console.log("Player bullet finished trajectory");
+      console.log(tm.target.x);
+      console.log("Player at x = ", this.x);
+    },
+  });
 };

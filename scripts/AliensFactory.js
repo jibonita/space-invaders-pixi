@@ -23,9 +23,12 @@ AliensFactory.prototype.fillAliens = function () {
   }
   // not used: this.activeLineColorIndex = this.itemRows + 1;
 
-  this.subscribeShooting();
+  this.establichShooters();
+  //   this.deleteAlien(3);
 
-  // this.moveAliensBlock();
+  //   this.deleteAlien(this.getChildAt(9));
+
+  //this.moveAliensBlock();
 
   //   setTimeout(() => {
   //     //   this.deleteAlien(3);
@@ -42,7 +45,7 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
   alien.x = (i % this.itemsPerRow) * (alien.width + Settings.ALIEN_H_MARGIN);
   alien.y = Math.floor(i / this.itemsPerRow) * Settings.ALIEN_VERTICAL_MARGIN;
 
-  //console.log(...alien.texture.textureCacheIds, [alien.x, alien.y]);
+  //console.log(...alien.imageName(), [alien.x, alien.y]);
 
   return alien;
 };
@@ -50,7 +53,7 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
 AliensFactory.prototype.moveAliensBlock = function () {
   const tm = TweenMax.fromTo(
     this,
-    2,
+    10,
     { x: Settings.ALIENS_INITIAL_POSITION },
     {
       x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_POSITION,
@@ -64,8 +67,8 @@ AliensFactory.prototype.moveAliensBlock = function () {
   return tm;
 };
 
-AliensFactory.prototype.deleteAlien = function (hitIndex) {
-  const child = this.getChildAt(hitIndex);
+AliensFactory.prototype.deleteAlien = function (hitItem) {
+  const child = isNaN(hitItem) ? hitItem : this.getChildAt(hitItem);
   this.removeChild(child);
 
   const aliensAboveHit = this.children.filter((elem) => elem.x === child.x);
@@ -94,7 +97,11 @@ AliensFactory.prototype.fireBullet = function (bullet) {
     ease: Power0.easeNone,
     onUpdate: () => {
       if (checkCollision(tm.target, this.parent.player)) {
-        console.log("Boom");
+        console.log("Boom player ");
+        this.parent.player.alpha -= 0.1;
+        if (!this.parent.player.alpha) {
+          console.log("Game Over");
+        }
         this.parent.removeChild(tm.target);
         tm.kill();
       }
@@ -106,12 +113,18 @@ AliensFactory.prototype.fireBullet = function (bullet) {
   });
 };
 
-AliensFactory.prototype.subscribeShooting = function () {
+AliensFactory.prototype.establichShooters = function () {
   this.assignInitialShooters();
-  let framesTime = 0;
+
+  this.subscribeShooting();
+};
+
+AliensFactory.prototype.subscribeShooting = function () {
+  let framesCount = 0;
   ticker.add((delta) => {
-    framesTime += delta;
-    if (Math.floor(framesTime) % 20 == 0) {
+    framesCount++;
+
+    if (framesCount % Settings.ALIEN_SHOOT_FRAMES == 0) {
       const shooters = this.getShooters();
       const alienShooter = shooters[randomInt(0, shooters.length - 1)];
       this.shoot(alienShooter);
@@ -142,7 +155,7 @@ AliensFactory.prototype.addAliensLine = function () {
 
 AliensFactory.prototype.getShooters = function () {
   const shooters = this.children.filter((a) => a.canShoot);
-  console.log(...shooters.map((a) => a.texture.textureCacheIds));
+  // console.log(...shooters.map((a) => a.imageName()));
   return shooters;
 };
 
