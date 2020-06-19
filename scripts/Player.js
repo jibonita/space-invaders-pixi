@@ -19,9 +19,6 @@ Player.prototype.setInitialPlayerPosition = function () {
 };
 
 Player.prototype.listen = function () {
-  // this.listenKey('ArrowLeft');
-  // this.listenKey('ArrowRight');
-
   let left = keyboard("ArrowLeft");
   left.press = () => {
     this.vx = -Settings.PLAYER_SPEED;
@@ -44,28 +41,11 @@ Player.prototype.listen = function () {
     // console.log("Bullet fired");
 
     this.fireBullet(this.createBullet());
-
-    // const bullet = new Bullet(this.parent);
-    // bullet.position.x = (this.width - bullet.width) / 2 + this.x;
-    // bullet.position.y =
-    //   Settings.CANVAS_HEIGHT - this.height - bullet.height - 5;
-
-    // const tm = TweenMax.to(bullet, 1, {
-    //   y: -bullet.height,
-    //   onUpdate: () => {
-    //     // for each shooting alien check collision with bullet
-    //     // ......
-    //     console.log(this.parent);
-    //   },
-    //   onComplete: () => {
-    //     console.log("Player bullet finished trajectory");
-    //   },
-    // });
   };
 };
 
 Player.prototype.createBullet = function (alien) {
-  // this.x = 92.80000000000001;
+  //this.x = 306.79999999999984;
 
   const bullet = new Bullet(this.parent);
   bullet.position.x = (this.width - bullet.width) / 2 + this.x;
@@ -80,11 +60,16 @@ Player.prototype.fireBullet = function (bullet) {
     y: -bullet.height,
     onUpdate: () => {
       count++;
-      // for each shooting alien check collision with bullet
-      // ......
+
       const aliensToKill = this.parent.invaders.getShooters();
       aliensToKill.some((alien) => {
-        const isCollision = checkCollision(bullet, alien);
+        //const isCollision = checkCollision(bullet, alien);
+        const isCollision = checkCollision(bullet, {
+          x: alien.x + this.parent.invaders.x,
+          y: alien.y + this.parent.invaders.y,
+          width: alien.width,
+          height: alien.height,
+        });
 
         if (isCollision) {
           this.parent.invaders.deleteAlien(alien);

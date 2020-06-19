@@ -26,7 +26,7 @@ AliensFactory.prototype.fillAliens = function () {
 
   //   this.deleteAlien(this.getChildAt(9));
 
-  //this.moveAliensBlock();
+  this.moveAliensBlock();
 
   //   setTimeout(() => {
   //     //   this.deleteAlien(3);
@@ -43,15 +43,13 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
   alien.x = (i % this.itemsPerRow) * (alien.width + Settings.ALIEN_H_MARGIN);
   alien.y = Math.floor(i / this.itemsPerRow) * Settings.ALIEN_VERTICAL_MARGIN;
 
-  //console.log(...alien.imageName(), [alien.x, alien.y]);
-
   return alien;
 };
 
 AliensFactory.prototype.moveAliensBlock = function () {
   const tm = TweenMax.fromTo(
     this,
-    10,
+    4,
     { x: Settings.ALIENS_INITIAL_POSITION },
     {
       x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_POSITION,
@@ -62,6 +60,7 @@ AliensFactory.prototype.moveAliensBlock = function () {
       },
     }
   ).repeat(-1);
+
   return tm;
 };
 

@@ -36,7 +36,7 @@ GameScene.prototype.initPlayerPosition = function () {
     onComplete: () => {
       ticker.add(this.move.bind(this, this.player));
 
-      this.getSampleBulletFromPlayer();
+      // this.getSampleBulletFromPlayer();
     },
   });
 };
