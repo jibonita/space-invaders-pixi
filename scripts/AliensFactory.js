@@ -4,7 +4,6 @@ function AliensFactory(stage) {
 
   this.itemsPerRow = 5;
   this.itemRows = 5;
-  // not used: this.activeLineColorIndex = 0;
 
   this.fillAliens();
 }
@@ -21,7 +20,6 @@ AliensFactory.prototype.fillAliens = function () {
     );
     this.addChild(alien);
   }
-  // not used: this.activeLineColorIndex = this.itemRows + 1;
 
   this.establichShooters();
   //   this.deleteAlien(3);
@@ -136,21 +134,6 @@ AliensFactory.prototype.assignInitialShooters = function () {
   for (let i = 0; i < this.itemsPerRow; i++) {
     this.children[i].canShoot = true;
   }
-};
-
-// ** method addAliensLine is not necessary in the game logic for the moment
-AliensFactory.prototype.addAliensLine = function () {
-  TweenMax.staggerTo(this.children, 0.5, {
-    y: `+=${Settings.ALIEN_VERTICAL_MARGIN}`,
-  });
-
-  for (let i = 0; i < this.itemsPerRow; i++) {
-    const alien = this.createAlien(i, 1 + this.activeLineColorIndex);
-    this.addChild(alien);
-  }
-
-  this.activeLineColorIndex =
-    (this.activeLineColorIndex + 1) % Settings.AVAILABLE_ALIEN_PATTERNS;
 };
 
 AliensFactory.prototype.getShooters = function () {
