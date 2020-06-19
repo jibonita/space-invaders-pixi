@@ -88,12 +88,22 @@ GameScene.prototype.getSampleBulletFromTop = function () {
   });
 };
 */
+
 function checkCollision(missile, target) {
-  const [mStart, mEnd] = [missile.x, missile.x + missile.width];
-  const [tStart, tEnd] = [target.x, target.x + target.width];
+  const [mStartX, mEndX, mStartY, mEndY] = [
+    missile.x,
+    missile.x + missile.width,
+    missile.y,
+    missile.y + missile.height,
+  ];
+  const [tStartX, tEndX, tStartY, tEndY] = [
+    target.x,
+    target.x + target.width,
+    target.y,
+    target.y + target.height,
+  ];
 
   return (
-    missile.y + missile.height > target.y &&
-    ((mStart > tStart && mStart < tEnd) || (mEnd > tStart && mEnd < tEnd))
+    mStartX < tEndX && mEndX > tStartX && mStartY < tEndY && mEndY > tStartY
   );
 }
