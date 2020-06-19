@@ -72,8 +72,8 @@ Player.prototype.fireBullet = function (bullet) {
         });
 
         if (isCollision) {
-          this.parent.invaders.deleteAlien(alien);
           bullet.parent.removeChild(bullet);
+          this.parent.invaders.deleteAlien(alien);
           tm.kill();
         }
 
@@ -81,9 +81,9 @@ Player.prototype.fireBullet = function (bullet) {
       });
     },
     onComplete: () => {
-      console.log("Player bullet finished trajectory");
-      console.log(tm.target.x);
-      console.log("Player at x = ", this.x);
+      //   console.log("Player bullet finished trajectory");
+      //   console.log(tm.target.x);
+      //   console.log("Player at x = ", this.x);
     },
   });
 };

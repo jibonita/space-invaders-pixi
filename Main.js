@@ -15,21 +15,11 @@ function Main() {
   this.loadSpriteSheet();
   this.displayWelcomeScene();
 
-  // window.requestID = requestAnimationFrame(this.update.bind(this));
+  ticker.start();
+  ticker.add(this.update, this);
 }
 
-const ticker = new PIXI.ticker.Ticker();
-ticker.start();
-
 Main.prototype.update = function (delta) {
-  window.requestID = requestAnimationFrame(this.update.bind(this));
-  //   console.log(delta);
-  //   // stop ticker after some seconds
-  //   //   console.log("update tick");
-  //   if (delta > 1500) {
-  //     cancelAnimationFrame(window.requestID);
-  //   }
-
   this.renderer.render(this.stage);
 };
 
@@ -42,8 +32,6 @@ Main.prototype.loadSpriteSheet = function () {
 Main.prototype.onAssetsLoaded = function (loader, resources) {
   // temp here. Skip Welcome screen
   this.displayGameScene();
-
-  window.requestID = requestAnimationFrame(this.update.bind(this));
 };
 
 Main.prototype.displayWelcomeScene = function () {

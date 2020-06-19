@@ -5,10 +5,28 @@ function AliensFactory(stage) {
   this.itemsPerRow = 5;
   this.itemRows = 5;
 
-  this.fillAliens();
+  this.initAliensGrid();
 }
 
 AliensFactory.prototype = Object.create(PIXI.Container.prototype);
+
+AliensFactory.prototype.initAliensGrid = function () {
+  this.fillAliens();
+
+  this.establichShooters();
+
+  this.setInitialPlayerPosition();
+
+  this.moveAliensGrid();
+
+  //   setTimeout(() => {
+  //     //   this.deleteAlien(3);
+  //     this.shoot(this.children[2]);
+  //     setTimeout(() => {
+  //       this.shoot(this.children[2]);
+  //     }, 4000);
+  //   }, 4000);
+};
 
 AliensFactory.prototype.fillAliens = function () {
   const total = this.itemsPerRow * this.itemRows;
@@ -20,21 +38,6 @@ AliensFactory.prototype.fillAliens = function () {
     );
     this.addChild(alien);
   }
-
-  this.establichShooters();
-  //   this.deleteAlien(3);
-
-  //   this.deleteAlien(this.getChildAt(9));
-
-  this.moveAliensBlock();
-
-  //   setTimeout(() => {
-  //     //   this.deleteAlien(3);
-  //     this.shoot(this.children[2]);
-  //     setTimeout(() => {
-  //       this.shoot(this.children[2]);
-  //     }, 4000);
-  //   }, 4000);
 };
 
 AliensFactory.prototype.createAlien = function (i, iconIndex) {
@@ -46,20 +49,27 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
   return alien;
 };
 
-AliensFactory.prototype.moveAliensBlock = function () {
-  const tm = TweenMax.fromTo(
-    this,
-    4,
-    { x: Settings.ALIENS_INITIAL_POSITION },
-    {
-      x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_POSITION,
-      ease: Power0.easeNone,
-      yoyoEase: true,
-      onRepeat: () => {
-        this.y += 10;
-      },
-    }
-  ).repeat(-1);
+AliensFactory.prototype.setInitialPlayerPosition = function () {
+  this.x = Settings.ALIENS_INITIAL_X_POSITION;
+  this.y = Settings.ALIENS_INITIAL_Y_POSITION;
+};
+
+AliensFactory.prototype.moveAliensGrid = function () {
+  const tm = TweenMax.to(this, 3, {
+    x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION,
+    ease: Power0.easeNone,
+    yoyoEase: true,
+    onRepeat: () => {
+      this.y += 10;
+    },
+    onUpdate: () => {
+      if (checkCollision(this, this.parent.player)) {
+        this.visible = false;
+        this.unsubscribeShooting();
+        tm.kill();
+      }
+    },
+  }).repeat(-1);
 
   return tm;
 };
@@ -76,7 +86,11 @@ AliensFactory.prototype.deleteAlien = function (hitItem) {
 };
 
 AliensFactory.prototype.shoot = function (alien) {
-  this.fireBullet(this.createBullet(alien));
+  if (this.children.length) {
+    this.fireBullet(this.createBullet(alien));
+  } else {
+    this.unsubscribeShooting();
+  }
 };
 
 AliensFactory.prototype.createBullet = function (alien) {
@@ -97,7 +111,7 @@ AliensFactory.prototype.fireBullet = function (bullet) {
         console.log("Boom player ");
         this.parent.player.alpha -= 0.1;
         if (!this.parent.player.alpha) {
-          console.log("Game Over");
+          console.log("Game Over. Invaders win");
         }
         this.parent.removeChild(tm.target);
         tm.kill();
@@ -117,16 +131,26 @@ AliensFactory.prototype.establichShooters = function () {
 };
 
 AliensFactory.prototype.subscribeShooting = function () {
-  let framesCount = 0;
-  ticker.add((delta) => {
-    framesCount++;
+  ticker.framesCount = 0;
 
-    if (framesCount % Settings.ALIEN_SHOOT_FRAMES == 0) {
-      const shooters = this.getShooters();
-      const alienShooter = shooters[randomInt(0, shooters.length - 1)];
-      this.shoot(alienShooter);
-    }
-  });
+  ticker.add(this.applyShot, this);
+};
+
+AliensFactory.prototype.applyShot = function (delta) {
+  ticker.framesCount++;
+
+  if (ticker.framesCount % Settings.ALIEN_SHOOT_FRAMES == 0) {
+    const shooters = this.getShooters();
+    const alienShooter = shooters[randomInt(0, shooters.length - 1)];
+    this.shoot(alienShooter);
+  }
+};
+
+AliensFactory.prototype.unsubscribeShooting = function () {
+  ticker.remove(this.applyShot, this);
+  // TODO: Pass some flag so that the screen changes
+
+  console.log("Game Over");
 };
 
 AliensFactory.prototype.assignInitialShooters = function () {

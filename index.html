@@ -38,7 +38,8 @@
     <script src="Main.js"></script>
     <script>
         function init() {
-            main = new Main();
+            window.ticker = new PIXI.ticker.Ticker();
+            const main = new Main();
         }
     </script>
 </body>
