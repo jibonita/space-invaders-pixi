@@ -82,7 +82,7 @@ AliensFactory.prototype.shoot = function (alien) {
 AliensFactory.prototype.createBullet = function (alien) {
   const bullet = new Bullet(this.parent);
   bullet.position.x = this.x + alien.x + (alien.width - bullet.width) / 2;
-  bullet.position.y = alien.y + alien.height - 5;
+  bullet.position.y = this.y + alien.y + alien.height - 5;
   bullet.anchor.set(1);
   bullet.rotation = Math.PI;
   return bullet;
