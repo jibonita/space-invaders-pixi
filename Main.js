@@ -12,6 +12,8 @@ function Main() {
     }
   );
 
+  this.collisionDispatcher = new CollisionDispatcher();
+
   this.loadSpriteSheet();
   this.displayWelcomeScene();
 
@@ -30,7 +32,7 @@ Main.prototype.loadSpriteSheet = function () {
 };
 
 Main.prototype.onAssetsLoaded = function (loader, resources) {
-  // temp here. Skip Welcome screen
+  // temp here. Put to skip Welcome screen
   this.displayGameScene();
 };
 

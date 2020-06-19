@@ -18,14 +18,6 @@ AliensFactory.prototype.initAliensGrid = function () {
   this.setInitialPlayerPosition();
 
   this.moveAliensGrid();
-
-  //   setTimeout(() => {
-  //     //   this.deleteAlien(3);
-  //     this.shoot(this.children[2]);
-  //     setTimeout(() => {
-  //       this.shoot(this.children[2]);
-  //     }, 4000);
-  //   }, 4000);
 };
 
 AliensFactory.prototype.fillAliens = function () {
