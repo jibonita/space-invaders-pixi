@@ -3,6 +3,8 @@ function Player(stage) {
   PIXI.Sprite.call(this, texture);
   stage.addChild(this);
 
+  this.health = Settings.PLAYER_INITIAL_HEALTH;
+
   this.setInitialPlayerPosition();
 
   this.listen();
@@ -86,4 +88,10 @@ Player.prototype.fireBullet = function (bullet) {
       //   console.log("Player at x = ", this.x);
     },
   });
+};
+
+Player.prototype.updateHealth = function (cost) {
+  this.health += cost;
+  //** player alpha formula works in case player max life point are the initial ones
+  this.alpha = this.health / Settings.PLAYER_INITIAL_HEALTH;
 };

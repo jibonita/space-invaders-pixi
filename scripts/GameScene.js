@@ -2,6 +2,8 @@ function GameScene(stage) {
   PIXI.Container.call(this);
   stage.addChild(this);
 
+  this.isLoaded = true;
+
   this.loadPlayersShips();
 }
 
@@ -11,6 +13,8 @@ GameScene.prototype.loadPlayersShips = function () {
   this.player = new Player(this);
 
   this.invaders = new AliensFactory(this);
+
+  this.bullets = [];
 
   this.initPlayerPosition();
 };

@@ -22,6 +22,22 @@ function Main() {
 }
 
 Main.prototype.update = function (delta) {
+  if (this.gameScene && this.gameScene.isLoaded) {
+    const bullets = this.gameScene.children.filter((e) => e instanceof Bullet);
+    this.collisionDispatcher.checkforHitPlayer(this.gameScene.player, bullets);
+
+    this.collisionDispatcher.checkInvadersWalkUponPlayer(
+      this.gameScene.player,
+      this.gameScene.invaders
+    );
+
+    if (this.gameScene.player.health <= 0) {
+      this.gameScene.isLoaded = false;
+      this.gameScene.invaders.removeAliensGrid();
+      console.log("Game Over. Invaders win");
+    }
+  }
+
   this.renderer.render(this.stage);
 };
 

@@ -17,7 +17,7 @@ AliensFactory.prototype.initAliensGrid = function () {
 
   this.setInitialPlayerPosition();
 
-  this.moveAliensGrid();
+  this.gridMove = this.moveAliensGrid();
 };
 
 AliensFactory.prototype.fillAliens = function () {
@@ -54,16 +54,24 @@ AliensFactory.prototype.moveAliensGrid = function () {
     onRepeat: () => {
       this.y += 10;
     },
-    onUpdate: () => {
-      if (checkCollision(this, this.parent.player)) {
-        this.visible = false;
-        this.unsubscribeShooting();
-        tm.kill();
-      }
-    },
+    // onUpdate: () => {
+    //   if (checkCollision(this, this.parent.player)) {
+    //     this.visible = false;
+    //     this.unsubscribeShooting();
+    //     tm.kill();
+    //   }
+    // },
   }).repeat(-1);
 
   return tm;
+};
+
+AliensFactory.prototype.removeAliensGrid = function () {
+  this.gridMove.kill();
+  this.unsubscribeShooting();
+  for (let i = this.children.length - 1; i > -1; i--) {
+    this.removeChild(this.children[i]);
+  }
 };
 
 AliensFactory.prototype.deleteAlien = function (hitItem) {
@@ -98,20 +106,21 @@ AliensFactory.prototype.fireBullet = function (bullet) {
   const tm = TweenMax.to(bullet, 1, {
     y: Settings.CANVAS_HEIGHT,
     ease: Power0.easeNone,
-    onUpdate: () => {
-      if (checkCollision(tm.target, this.parent.player)) {
-        console.log("Boom player ");
-        this.parent.player.alpha -= 0.1;
-        if (!this.parent.player.alpha) {
-          console.log("Game Over. Invaders win");
-        }
-        this.parent.removeChild(tm.target);
-        tm.kill();
-      }
-    },
+    // onUpdate: () => {
+    //   if (checkCollision(tm.target, this.parent.player)) {
+    //     console.log("Boom player ");
+    //     this.parent.player.alpha -= 0.1;
+    //     if (!this.parent.player.alpha) {
+    //       console.log("Game Over. Invaders win");
+    //     }
+    //     this.parent.removeChild(tm.target);
+    //     tm.kill();
+    //   }
+    // },
     onComplete: () => {
-      this.removeChild(tm.target);
-      console.log("Bullet finished trajectory");
+      if (bullet.parent) {
+        bullet.parent.removeChild(bullet);
+      }
     },
   });
 };
@@ -140,9 +149,6 @@ AliensFactory.prototype.applyShot = function (delta) {
 
 AliensFactory.prototype.unsubscribeShooting = function () {
   ticker.remove(this.applyShot, this);
-  // TODO: Pass some flag so that the screen changes
-
-  console.log("Game Over");
 };
 
 AliensFactory.prototype.assignInitialShooters = function () {
@@ -153,7 +159,6 @@ AliensFactory.prototype.assignInitialShooters = function () {
 
 AliensFactory.prototype.getShooters = function () {
   const shooters = this.children.filter((a) => a.canShoot);
-  // console.log(...shooters.map((a) => a.imageName()));
   return shooters;
 };
 
