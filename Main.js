@@ -24,7 +24,11 @@ function Main() {
 Main.prototype.update = function (delta) {
   if (this.gameScene && this.gameScene.isLoaded) {
     const bullets = this.gameScene.children.filter((e) => e instanceof Bullet);
-    this.collisionDispatcher.checkforHitPlayer(this.gameScene.player, bullets);
+
+    this.collisionDispatcher.checkforHitPlayer(
+      this.gameScene.player,
+      bullets.filter((b) => !b.isPlayerBullet)
+    );
 
     this.collisionDispatcher.checkInvadersWalkUponPlayer(
       this.gameScene.player,
@@ -36,6 +40,20 @@ Main.prototype.update = function (delta) {
       this.gameScene.invaders.removeAliensGrid();
       console.log("Game Over. Invaders win");
     }
+
+    const invaderShooters = this.gameScene.invaders.getShooters();
+    this.collisionDispatcher.checkforHitAlien(
+      bullets.filter((b) => b.isPlayerBullet),
+      invaderShooters
+    );
+
+    bullets
+      .filter((bullet) => bullet.isDestroyed)
+      .forEach((bullet) => bullet.parent.removeChild(bullet));
+
+    invaderShooters
+      .filter((alien) => alien.isDestroyed)
+      .forEach((alien) => alien.parent.deleteAlien(alien));
   }
 
   this.renderer.render(this.stage);

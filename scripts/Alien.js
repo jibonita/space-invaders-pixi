@@ -12,6 +12,7 @@ Alien.prototype.setInitialState = function () {
   this.scale.set(0.5);
   this.vx = 0;
   this.canShoot = false;
+  this.isDestroyed = false;
 };
 
 Alien.prototype.imageName = function () {

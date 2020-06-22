@@ -54,13 +54,6 @@ AliensFactory.prototype.moveAliensGrid = function () {
     onRepeat: () => {
       this.y += 10;
     },
-    // onUpdate: () => {
-    //   if (checkCollision(this, this.parent.player)) {
-    //     this.visible = false;
-    //     this.unsubscribeShooting();
-    //     tm.kill();
-    //   }
-    // },
   }).repeat(-1);
 
   return tm;
@@ -106,17 +99,6 @@ AliensFactory.prototype.fireBullet = function (bullet) {
   const tm = TweenMax.to(bullet, 1, {
     y: Settings.CANVAS_HEIGHT,
     ease: Power0.easeNone,
-    // onUpdate: () => {
-    //   if (checkCollision(tm.target, this.parent.player)) {
-    //     console.log("Boom player ");
-    //     this.parent.player.alpha -= 0.1;
-    //     if (!this.parent.player.alpha) {
-    //       console.log("Game Over. Invaders win");
-    //     }
-    //     this.parent.removeChild(tm.target);
-    //     tm.kill();
-    //   }
-    // },
     onComplete: () => {
       if (bullet.parent) {
         bullet.parent.removeChild(bullet);
