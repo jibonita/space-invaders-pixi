@@ -33,6 +33,17 @@ Player.prototype.listen = function () {
   space.press = () => {
     this.fireBullet(this.createBullet());
   };
+
+  const escape = keyboard("Escape");
+  escape.press = () => {
+    this.health = 0;
+  };
+
+  this.listeners = [left, right, space];
+};
+
+Player.prototype.stopListen = function () {
+  this.listeners.forEach((listener) => listener.unsubscribe());
 };
 
 Player.prototype.createBullet = function (alien) {
@@ -54,6 +65,7 @@ Player.prototype.fireBullet = function (bullet) {
     },
     onComplete: () => {
       bullet.parent.removeChild(bullet);
+      console.log("bullet from player");
     },
   });
 };

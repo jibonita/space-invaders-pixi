@@ -1,3 +1,5 @@
+// ** author: https://github.com/kittykatattack/learningPixi#keyboard-movement
+
 function keyboard(value) {
   let key = {};
   key.value = value;

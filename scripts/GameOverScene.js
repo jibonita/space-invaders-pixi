@@ -1,4 +1,4 @@
-function WelcomeScene(stage) {
+function GameOverScene(stage) {
   PIXI.Container.call(this);
 
   stage.addChild(this);
@@ -8,9 +8,9 @@ function WelcomeScene(stage) {
   this.loadStartButton();
 }
 
-WelcomeScene.prototype = Object.create(PIXI.Container.prototype);
+GameOverScene.prototype = Object.create(PIXI.Container.prototype);
 
-WelcomeScene.prototype.loadStartButton = function () {
+GameOverScene.prototype.loadStartButton = function () {
   const button = new PIXI.Graphics();
   this.drawButton(button, 5);
   this.addChild(button);
@@ -29,19 +29,19 @@ WelcomeScene.prototype.loadStartButton = function () {
   button.on("mouseout", this.onStartGameOut.bind(this));
 };
 
-WelcomeScene.prototype.onStartGameClicked = function (e) {
+GameOverScene.prototype.onStartGameClicked = function (e) {
   document.dispatchEvent(new Event("start-click"));
 };
 
-WelcomeScene.prototype.onStartGameHover = function (e) {
+GameOverScene.prototype.onStartGameHover = function (e) {
   this.drawButton(e.currentTarget, 7);
 };
 
-WelcomeScene.prototype.onStartGameOut = function (e) {
+GameOverScene.prototype.onStartGameOut = function (e) {
   this.drawButton(e.currentTarget, 5);
 };
 
-WelcomeScene.prototype.drawText = () => {
+GameOverScene.prototype.drawText = () => {
   var style = new PIXI.TextStyle({
     fontFamily: "Arial",
     fontSize: 26,
@@ -54,22 +54,22 @@ WelcomeScene.prototype.drawText = () => {
     wordWrapWidth: 440,
   });
 
-  var font = new PIXI.Text("Start", style);
+  var font = new PIXI.Text("Play Again", style);
   font.x = 25;
 
   return font;
 };
 
-WelcomeScene.prototype.drawButton = function (graphic, border) {
+GameOverScene.prototype.drawButton = function (graphic, border) {
   graphic.lineStyle(border, Settings.BUTTON_GREEN_LINE, 1);
   graphic.beginFill(0x650a5a);
-  graphic.drawRect(0, 0, 120, 40);
+  graphic.drawRect(0, 0, 190, 40);
   graphic.endFill();
 };
 
-WelcomeScene.prototype.loadHeadingMessage = function () {
+GameOverScene.prototype.loadHeadingMessage = function () {
   let totalStrWidth = 100;
-  const str = "Welcome to Space Invaders Game!";
+  const str = "Game Over";
   const strText = str.split("").map((ch, i) => {
     const pixiText = new PIXI.Text(ch, { fill: "#ffffff" });
     pixiText.position.x = totalStrWidth;

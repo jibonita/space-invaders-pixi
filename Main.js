@@ -36,9 +36,12 @@ Main.prototype.update = function (delta) {
     );
 
     if (this.gameScene.player.health <= 0) {
-      this.gameScene.isLoaded = false;
-      this.gameScene.invaders.removeAliensGrid();
-      console.log("Game Over. Invaders win");
+      this.setGameOver();
+      // this.gameScene.isLoaded = false;
+      // this.gameScene.invaders.removeAliensGrid();
+      // console.log("Game Over. Invaders win");
+
+      // this.displayGameOverScene();
     }
 
     const healthBar = this.gameScene.statistics.healthBar;
@@ -84,7 +87,7 @@ Main.prototype.loadSpriteSheet = function () {
 
 Main.prototype.onAssetsLoaded = function (loader, resources) {
   // temp here. Put to skip Welcome screen
-  this.displayGameScene();
+  //this.displayGameScene();
 };
 
 Main.prototype.displayWelcomeScene = function () {
@@ -97,4 +100,19 @@ Main.prototype.displayWelcomeScene = function () {
 Main.prototype.displayGameScene = function () {
   this.gameScene = new GameScene(this.stage);
   this.welcomeScene.visible = false;
+  if (this.gameOverScene) this.gameOverScene.visible = false;
+};
+
+Main.prototype.displayGameOverScene = function () {
+  this.gameOverScene = new GameOverScene(this.stage);
+  this.gameScene.visible = false;
+};
+
+Main.prototype.setGameOver = function () {
+  this.gameScene.isLoaded = false;
+  this.gameScene.invaders.removeAliensGrid();
+  this.gameScene.player.stopListen();
+  console.log("Game Over. Invaders win");
+
+  this.displayGameOverScene();
 };

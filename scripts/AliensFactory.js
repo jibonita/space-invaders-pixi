@@ -109,6 +109,7 @@ AliensFactory.prototype.fireBullet = function (bullet) {
       if (bullet.parent) {
         bullet.parent.removeChild(bullet);
       }
+      console.log("invader bullet fired");
     },
   });
 };
