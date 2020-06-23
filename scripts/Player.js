@@ -5,14 +5,14 @@ function Player(stage) {
 
   this.health = Settings.PLAYER_INITIAL_HEALTH;
 
-  this.setInitialPlayerPosition();
+  this.setInitialState();
 
   this.listen();
 }
 
 Player.prototype = Object.create(PIXI.Sprite.prototype);
 
-Player.prototype.setInitialPlayerPosition = function () {
+Player.prototype.setInitialState = function () {
   this.height = 50;
   this.width = 50;
   this.position.x = 0;
@@ -61,31 +61,12 @@ Player.prototype.fireBullet = function (bullet) {
   const tm = TweenMax.to(bullet, 1, {
     y: -bullet.height,
     onUpdate: () => {
-      // const aliensToKill = this.parent.invaders.getShooters();
-      // aliensToKill.some((alien) => {
-      //   const isCollision = checkCollision(bullet, {
-      //     x: alien.x + this.parent.invaders.x,
-      //     y: alien.y + this.parent.invaders.y,
-      //     width: alien.width,
-      //     height: alien.height,
-      //   });
-      //   if (isCollision) {
-      //     console.log(bullet.parent);
-      //     bullet.parent.removeChild(bullet);
-      //     this.parent.invaders.deleteAlien(alien);
-      //     tm.kill();
-      //   }
-      //   return isCollision;
-      // });
       if (bullet.isDestroyed) {
         tm.kill();
       }
     },
     onComplete: () => {
-      //bullet.parent.removeChild(bullet);
-      //   console.log("Player bullet finished trajectory");
-      //   console.log(tm.target.x);
-      //   console.log("Player at x = ", this.x);
+      bullet.parent.removeChild(bullet);
     },
   });
 };

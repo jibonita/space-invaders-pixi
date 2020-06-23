@@ -7,9 +7,7 @@ CollisionDispatcher.prototype.checkforHitPlayer = function (
   bulletsCollection.some((bullet) => {
     const isCollision = this.checkCollision(bullet, player);
     if (isCollision) {
-      // console.log("Boom player ");
       player.updateHealth(-bullet.lifeCost);
-      //bullet.parent.removeChild(bullet);
       bullet.isDestroyed = true;
     }
     return isCollision;
@@ -20,7 +18,7 @@ CollisionDispatcher.prototype.checkInvadersWalkUponPlayer = function (
   player,
   aliensGrid
 ) {
-  if (checkCollision(player, aliensGrid)) {
+  if (this.checkCollision(player, aliensGrid)) {
     player.updateHealth(-player.health);
   }
 };
@@ -41,29 +39,12 @@ CollisionDispatcher.prototype.checkforHitAlien = function (
       const isCollision = this.checkCollision(bullet, alienCoords);
 
       if (isCollision) {
-        // bullet.parent.removeChild(bullet);
-        // alien.parent.deleteAlien(alien);
         alien.isDestroyed = true;
         bullet.isDestroyed = true;
       }
       return isCollision;
     });
   });
-  // const aliensToKill = this.parent.invaders.getShooters();
-  // aliensToKill.some((alien) => {
-  //   const isCollision = checkCollision(bullet, {
-  //     x: alien.x + this.parent.invaders.x,
-  //     y: alien.y + this.parent.invaders.y,
-  //     width: alien.width,
-  //     height: alien.height,
-  //   });
-  //   if (isCollision) {
-  //     bullet.parent.removeChild(bullet);
-  //     this.parent.invaders.deleteAlien(alien);
-  //     tm.kill();
-  //   }
-  //   return isCollision;
-  // });
 };
 
 CollisionDispatcher.prototype.checkCollision = function (missile, target) {

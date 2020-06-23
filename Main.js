@@ -53,7 +53,14 @@ Main.prototype.update = function (delta) {
 
     invaderShooters
       .filter((alien) => alien.isDestroyed)
-      .forEach((alien) => alien.parent.deleteAlien(alien));
+      .forEach((alien) => {
+        alien.parent.deleteAlien(alien);
+        new Explosion(
+          this.gameScene,
+          alien.x + this.gameScene.invaders.x,
+          alien.y + this.gameScene.invaders.y
+        );
+      });
   }
 
   this.renderer.render(this.stage);
@@ -62,6 +69,7 @@ Main.prototype.update = function (delta) {
 Main.prototype.loadSpriteSheet = function () {
   PIXI.loader
     .add("icons", Settings.SPRITESHEET)
+    .add("explosion", Settings.EXPLOSION_SPRITE)
     .load(this.onAssetsLoaded.bind(this));
 };
 

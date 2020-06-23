@@ -26,10 +26,16 @@ AliensFactory.prototype.fillAliens = function () {
   for (let i = 0; i < total; i++) {
     const alien = this.createAlien(
       total - 1 - i,
-      1 + Math.floor(i / this.itemsPerRow)
+      1 + (Math.floor(i / this.itemsPerRow) % Settings.ALIEN_AVAILABLE_PATTERNS)
     );
     this.addChild(alien);
   }
+};
+
+AliensFactory.prototype.establichShooters = function () {
+  this.assignInitialShooters();
+
+  this.subscribeShooting();
 };
 
 AliensFactory.prototype.createAlien = function (i, iconIndex) {
@@ -107,12 +113,6 @@ AliensFactory.prototype.fireBullet = function (bullet) {
   });
 };
 
-AliensFactory.prototype.establichShooters = function () {
-  this.assignInitialShooters();
-
-  this.subscribeShooting();
-};
-
 AliensFactory.prototype.subscribeShooting = function () {
   ticker.framesCount = 0;
 
@@ -122,7 +122,7 @@ AliensFactory.prototype.subscribeShooting = function () {
 AliensFactory.prototype.applyShot = function (delta) {
   ticker.framesCount++;
 
-  if (ticker.framesCount % Settings.ALIEN_SHOOT_FRAMES == 0) {
+  if (ticker.framesCount % Settings.ALIEN_SHOOT_EACH_X_FRAMES == 0) {
     const shooters = this.getShooters();
     const alienShooter = shooters[randomInt(0, shooters.length - 1)];
     this.shoot(alienShooter);
