@@ -11,11 +11,11 @@ function AliensFactory(stage) {
 AliensFactory.prototype = Object.create(PIXI.Container.prototype);
 
 AliensFactory.prototype.initAliensGrid = function () {
+  this.setInitialState();
+
   this.fillAliens();
 
   this.establichShooters();
-
-  this.setInitialPlayerPosition();
 
   this.gridMove = this.moveAliensGrid();
 };
@@ -47,7 +47,7 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
   return alien;
 };
 
-AliensFactory.prototype.setInitialPlayerPosition = function () {
+AliensFactory.prototype.setInitialState = function () {
   this.x = Settings.ALIENS_INITIAL_X_POSITION;
   this.y = Settings.ALIENS_INITIAL_Y_POSITION;
 };

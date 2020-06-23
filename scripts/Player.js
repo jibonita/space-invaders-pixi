@@ -3,8 +3,6 @@ function Player(stage) {
   PIXI.Sprite.call(this, texture);
   stage.addChild(this);
 
-  this.health = Settings.PLAYER_INITIAL_HEALTH;
-
   this.setInitialState();
 
   this.listen();
@@ -18,37 +16,26 @@ Player.prototype.setInitialState = function () {
   this.position.x = 0;
   this.position.y = Settings.CANVAS_HEIGHT - this.height - 5;
   this.vx = 0;
+  this.health = Settings.PLAYER_INITIAL_HEALTH;
+  this.score = 0;
 };
 
 Player.prototype.listen = function () {
-  let left = keyboard("ArrowLeft");
-  left.press = () => {
-    this.vx = -Settings.PLAYER_SPEED;
-  };
-  left.release = () => {
-    this.vx = 0;
-  };
+  const left = keyboard("ArrowLeft");
+  left.press = () => (this.vx = -Settings.PLAYER_SPEED);
+  left.release = () => (this.vx = 0);
 
-  let right = keyboard("ArrowRight");
-  right.press = () => {
-    this.vx = Settings.PLAYER_SPEED;
-  };
-  right.release = () => {
-    this.vx = 0;
-  };
+  const right = keyboard("ArrowRight");
+  right.press = () => (this.vx = Settings.PLAYER_SPEED);
+  right.release = () => (this.vx = 0);
 
-  let space = keyboard(" ");
-
+  const space = keyboard(" ");
   space.press = () => {
-    // console.log("Bullet fired");
-
     this.fireBullet(this.createBullet());
   };
 };
 
 Player.prototype.createBullet = function (alien) {
-  //this.x = 306.79999999999984;
-
   const bullet = new Bullet(this.parent);
   bullet.position.x = (this.width - bullet.width) / 2 + this.x;
   bullet.position.y = Settings.CANVAS_HEIGHT - this.height - bullet.height - 5;

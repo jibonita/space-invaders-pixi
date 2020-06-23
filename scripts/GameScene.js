@@ -16,6 +16,8 @@ GameScene.prototype.loadPlayersShips = function () {
 
   this.bullets = [];
 
+  this.statistics = new Statistics(this);
+
   this.initPlayerPosition();
 };
 

@@ -41,6 +41,11 @@ Main.prototype.update = function (delta) {
       console.log("Game Over. Invaders win");
     }
 
+    const healthBar = this.gameScene.statistics.healthBar;
+    if (healthBar) {
+      healthBar.update(this.gameScene.player.alpha);
+    }
+
     const invaderShooters = this.gameScene.invaders.getShooters();
     this.collisionDispatcher.checkforHitAlien(
       bullets.filter((b) => b.isPlayerBullet),
@@ -54,6 +59,8 @@ Main.prototype.update = function (delta) {
     invaderShooters
       .filter((alien) => alien.isDestroyed)
       .forEach((alien) => {
+        this.gameScene.player.score +=
+          Settings.PLAYER_POINTS_ADDED_FOR_KILLED_ALIEN;
         alien.parent.deleteAlien(alien);
         new Explosion(
           this.gameScene,
@@ -61,6 +68,8 @@ Main.prototype.update = function (delta) {
           alien.y + this.gameScene.invaders.y
         );
       });
+
+    this.gameScene.statistics.scoreBar.update(this.gameScene.player.score);
   }
 
   this.renderer.render(this.stage);
