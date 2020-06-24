@@ -13,9 +13,6 @@ function Explosion(stage, x, y) {
   this.setInitialState(x, y);
 
   this.play();
-  setTimeout(() => {
-    this.destroy();
-  }, 275);
 }
 
 Explosion.prototype = Object.create(PIXI.extras.AnimatedSprite.prototype);
@@ -25,4 +22,5 @@ Explosion.prototype.setInitialState = function (x, y) {
   this.x = x;
   this.y = y;
   this.animationSpeed = 1.5;
+  this.loop = false;
 };
