@@ -13,8 +13,18 @@ function ScoreBar(stage) {
 
 ScoreBar.prototype = Object.create(PIXI.Text.prototype);
 
-ScoreBar.prototype.setInitialState = function () {};
+ScoreBar.prototype.setInitialState = function () {
+  this.score = 0;
+};
 
 ScoreBar.prototype.update = function (score) {
-  this.text = "Score: " + score;
+  const tm = TweenMax.to(this, 0.3, {
+    score,
+    roundProps: {
+      score: 1,
+    },
+    onUpdate: function () {
+      tm.target.text = "Score: " + tm.target.score;
+    },
+  });
 };

@@ -35,15 +35,6 @@ Main.prototype.update = function (delta) {
       this.gameScene.invaders
     );
 
-    if (this.gameScene.player.health <= 0) {
-      this.setGameOver();
-      // this.gameScene.isLoaded = false;
-      // this.gameScene.invaders.removeAliensGrid();
-      // console.log("Game Over. Invaders win");
-
-      // this.displayGameOverScene();
-    }
-
     const healthBar = this.gameScene.statistics.healthBar;
     if (healthBar) {
       healthBar.update(this.gameScene.player.alpha);
@@ -70,9 +61,14 @@ Main.prototype.update = function (delta) {
           alien.x + this.gameScene.invaders.x,
           alien.y + this.gameScene.invaders.y
         );
+        this.gameScene.statistics.scoreBar.update(this.gameScene.player.score);
       });
 
-    this.gameScene.statistics.scoreBar.update(this.gameScene.player.score);
+    if (this.gameScene.player.health <= 0) {
+      this.setGameOver({ message: "Invaders won!" });
+    } else if (!invaderShooters.length) {
+      this.setGameOver({ message: "Player won!" });
+    }
   }
 
   this.renderer.render(this.stage);
@@ -87,7 +83,7 @@ Main.prototype.loadSpriteSheet = function () {
 
 Main.prototype.onAssetsLoaded = function (loader, resources) {
   // temp here. Put to skip Welcome screen
-  //this.displayGameScene();
+  // this.displayGameScene();
 };
 
 Main.prototype.displayWelcomeScene = function () {
@@ -103,16 +99,18 @@ Main.prototype.displayGameScene = function () {
   if (this.gameOverScene) this.gameOverScene.visible = false;
 };
 
-Main.prototype.displayGameOverScene = function () {
-  this.gameOverScene = new GameOverScene(this.stage);
+Main.prototype.displayGameOverScene = function (params) {
+  this.gameOverScene = new GameOverScene(this.stage, params);
   this.gameScene.visible = false;
 };
 
-Main.prototype.setGameOver = function () {
+Main.prototype.setGameOver = function (params) {
   this.gameScene.isLoaded = false;
   this.gameScene.invaders.removeAliensGrid();
   this.gameScene.player.stopListen();
-  console.log("Game Over. Invaders win");
 
-  this.displayGameOverScene();
+  this.displayGameOverScene({
+    ...params,
+    score: this.gameScene.player.score,
+  });
 };

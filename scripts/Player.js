@@ -65,7 +65,6 @@ Player.prototype.fireBullet = function (bullet) {
     },
     onComplete: () => {
       bullet.parent.removeChild(bullet);
-      console.log("bullet from player");
     },
   });
 };
