@@ -102,16 +102,18 @@ AliensFactory.prototype.createBullet = function (alien) {
 };
 
 AliensFactory.prototype.fireBullet = function (bullet) {
-  const tm = TweenMax.to(bullet, 1, {
-    y: Settings.CANVAS_HEIGHT,
-    ease: Power0.easeNone,
-    onComplete: () => {
-      if (bullet.parent) {
-        bullet.parent.removeChild(bullet);
-      }
-      console.log("invader bullet fired");
-    },
-  });
+  document.dispatchEvent(
+    new CustomEvent("fire", { detail: { bullet, toY: Settings.CANVAS_HEIGHT } })
+  );
+
+  // const tm = TweenMax.to(bullet, 1, {
+  //   y: Settings.CANVAS_HEIGHT,
+  //   onUpdate: () => {
+  //     if (bullet.isDestroyed) {
+  //       tm.kill();
+  //     }
+  //   },
+  // });
 };
 
 AliensFactory.prototype.subscribeShooting = function () {

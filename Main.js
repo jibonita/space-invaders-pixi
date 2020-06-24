@@ -14,11 +14,13 @@ function Main() {
 
   this.collisionDispatcher = new CollisionDispatcher();
 
-  this.loadSpriteSheet();
+  this.loadResources();
   this.displayWelcomeScene();
 
   ticker.start();
   ticker.add(this.update, this);
+
+  this.attachEventListeners();
 }
 
 Main.prototype.update = function (delta) {
@@ -74,7 +76,7 @@ Main.prototype.update = function (delta) {
   this.renderer.render(this.stage);
 };
 
-Main.prototype.loadSpriteSheet = function () {
+Main.prototype.loadResources = function () {
   PIXI.loader
     .add("icons", Settings.SPRITESHEET)
     .add("explosion", Settings.EXPLOSION_SPRITE)
@@ -88,9 +90,6 @@ Main.prototype.onAssetsLoaded = function (loader, resources) {
 
 Main.prototype.displayWelcomeScene = function () {
   this.welcomeScene = new WelcomeScene(this.stage);
-  document.addEventListener("start-click", () => {
-    this.displayGameScene();
-  });
 };
 
 Main.prototype.displayGameScene = function () {
@@ -112,5 +111,27 @@ Main.prototype.setGameOver = function (params) {
   this.displayGameOverScene({
     ...params,
     score: this.gameScene.player.score,
+  });
+};
+
+Main.prototype.attachEventListeners = function () {
+  document.addEventListener("start-click", () => {
+    this.displayGameScene();
+  });
+
+  document.addEventListener("fire", (e) => {
+    this.fireBullet(e.detail.bullet, e.detail.toY);
+  });
+};
+
+Main.prototype.fireBullet = function (bullet, toY) {
+  const tm = TweenMax.to(bullet, 1, {
+    y: toY,
+    ease: Power0.easeNone,
+    onUpdate: () => {
+      if (bullet.isDestroyed) {
+        tm.kill();
+      }
+    },
   });
 };

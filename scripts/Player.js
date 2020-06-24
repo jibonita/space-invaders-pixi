@@ -14,7 +14,7 @@ Player.prototype.setInitialState = function () {
   this.height = 50;
   this.width = 50;
   this.position.x = 0;
-  this.position.y = Settings.CANVAS_HEIGHT - this.height - 5;
+  this.position.y = Settings.CANVAS_HEIGHT - 100; //this.height - 5;
   this.vx = 0;
   this.health = Settings.PLAYER_INITIAL_HEALTH;
   this.score = 0;
@@ -56,17 +56,18 @@ Player.prototype.createBullet = function (alien) {
 };
 
 Player.prototype.fireBullet = function (bullet) {
-  const tm = TweenMax.to(bullet, 1, {
-    y: -bullet.height,
-    onUpdate: () => {
-      if (bullet.isDestroyed) {
-        tm.kill();
-      }
-    },
-    onComplete: () => {
-      bullet.parent.removeChild(bullet);
-    },
-  });
+  document.dispatchEvent(
+    new CustomEvent("fire", { detail: { bullet, toY: -bullet.height } })
+  );
+
+  // const tm = TweenMax.to(bullet, 1, {
+  //   y: -bullet.height,
+  //   onUpdate: () => {
+  //     if (bullet.isDestroyed) {
+  //       tm.kill();
+  //     }
+  //   },
+  // });
 };
 
 Player.prototype.updateHealth = function (cost) {

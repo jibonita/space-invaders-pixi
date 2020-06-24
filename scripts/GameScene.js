@@ -4,12 +4,12 @@ function GameScene(stage) {
 
   this.isLoaded = true;
 
-  this.loadPlayersShips();
+  this.loadGameAssets();
 }
 
 GameScene.prototype = Object.create(PIXI.Container.prototype);
 
-GameScene.prototype.loadPlayersShips = function () {
+GameScene.prototype.loadGameAssets = function () {
   this.player = new Player(this);
 
   this.invaders = new AliensFactory(this);
@@ -41,8 +41,7 @@ GameScene.prototype.initPlayerPosition = function () {
     ease: Power1.easeIn,
     onComplete: () => {
       ticker.add(this.move.bind(this, this.player));
-
-      // this.getSampleBulletFromPlayer();
+      //this.getSampleBulletFromPlayer();
     },
   });
 };
