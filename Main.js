@@ -63,12 +63,13 @@ Main.prototype.update = function (delta) {
           alien.x + this.gameScene.invaders.x,
           alien.y + this.gameScene.invaders.y
         );
+        PIXI.sound.play("explode");
         this.gameScene.statistics.scoreBar.update(this.gameScene.player.score);
       });
 
     if (this.gameScene.player.health <= 0) {
       this.setGameOver({ message: "Invaders won!" });
-    } else if (!invaderShooters.length) {
+    } else if (!this.gameScene.invaders.children.length) {
       this.setGameOver({ message: "Player won!" });
     }
   }
@@ -79,13 +80,17 @@ Main.prototype.update = function (delta) {
 Main.prototype.loadResources = function () {
   PIXI.loader
     .add("icons", Settings.SPRITESHEET)
+    .add("sound", Settings.SPRITESHEET_SOUND)
     .add("explosion", Settings.EXPLOSION_SPRITE)
-    .load(this.onAssetsLoaded.bind(this));
+    .add("enter", Settings.SOUND_GAME_ENTER)
+    .add("shoot", Settings.SOUND_BULLET_FIRE)
+    .add("explode", Settings.SOUND_EXPLOSION)
+    .load(this.onResourcesLoaded.bind(this));
 };
 
-Main.prototype.onAssetsLoaded = function (loader, resources) {
+Main.prototype.onResourcesLoaded = function (loader, resources) {
   // temp here. Put to skip Welcome screen
-  // this.displayGameScene();
+  //this.displayGameScene();
 };
 
 Main.prototype.displayWelcomeScene = function () {
@@ -104,6 +109,7 @@ Main.prototype.displayGameOverScene = function (params) {
 };
 
 Main.prototype.setGameOver = function (params) {
+  console.log(params);
   this.gameScene.isLoaded = false;
   this.gameScene.invaders.removeAliensGrid();
   this.gameScene.player.stopListen();
@@ -125,6 +131,8 @@ Main.prototype.attachEventListeners = function () {
 };
 
 Main.prototype.fireBullet = function (bullet, toY) {
+  PIXI.sound.play("shoot");
+
   const tm = TweenMax.to(bullet, 1, {
     y: toY,
     ease: Power0.easeNone,

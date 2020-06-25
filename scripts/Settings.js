@@ -4,8 +4,13 @@ Settings.BUTTON_GREEN_LINE = 0x00ff99;
 Settings.BUTTON_YELLOW_LINE = 0xfeeb77;
 Settings.CANVAS_WIDTH = 700;
 Settings.CANVAS_HEIGHT = 500;
-Settings.SPRITESHEET = "./images/icons-sheet.json";
-Settings.EXPLOSION_SPRITE = "./images/explosion.json";
+Settings.SPRITESHEET = "./resources/icons-sheet.json";
+Settings.SPRITESHEET_SOUND = "./resources/sound-on-off.json";
+Settings.EXPLOSION_SPRITE = "./resources/explosion.json";
+
+Settings.SOUND_GAME_ENTER = "./resources/sound/enter.mp3";
+Settings.SOUND_BULLET_FIRE = "./resources/sound/bullet-shot.mp3";
+Settings.SOUND_EXPLOSION = "./resources/sound/explosion2.mp3";
 
 Settings.PLAYER_INITIAL_POSITION = 50;
 Settings.PLAYER_SPEED = 10.7;

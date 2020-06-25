@@ -18,7 +18,35 @@ GameScene.prototype.loadGameAssets = function () {
 
   this.statistics = new Statistics(this);
 
-  this.initPlayerPosition();
+  this.sound = new Sound(this);
+
+  this.init();
+};
+
+GameScene.prototype.init = function () {
+  this.initPlayersPosition();
+  // this.sound.mute();
+};
+
+GameScene.prototype.initPlayersPosition = function () {
+  PIXI.sound.play("enter");
+
+  TweenMax.to(this.player, 1, {
+    x: Settings.PLAYER_INITIAL_POSITION,
+    ease: Power1.easeIn,
+    onComplete: () => {
+      ticker.add(this.move.bind(this, this.player));
+      //this.getSampleBulletFromPlayer();
+    },
+  });
+
+  TweenMax.to(this.invaders, 1, {
+    x: Settings.ALIENS_INITIAL_X_POSITION,
+    ease: Power1.easeIn,
+    onComplete: () => {
+      this.invaders.initMove();
+    },
+  });
 };
 
 GameScene.prototype.move = (obj) => {
@@ -33,17 +61,6 @@ GameScene.prototype.move = (obj) => {
   } else if (obj.position.x > rightBound) {
     obj.position.x = rightBound;
   }
-};
-
-GameScene.prototype.initPlayerPosition = function () {
-  TweenMax.to(this.player, 1, {
-    x: Settings.PLAYER_INITIAL_POSITION,
-    ease: Power1.easeIn,
-    onComplete: () => {
-      ticker.add(this.move.bind(this, this.player));
-      //this.getSampleBulletFromPlayer();
-    },
-  });
 };
 
 /// helpers

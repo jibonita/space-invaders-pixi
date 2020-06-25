@@ -14,10 +14,16 @@ AliensFactory.prototype.initAliensGrid = function () {
   this.setInitialState();
 
   this.fillAliens();
-
+};
+AliensFactory.prototype.initMove = function () {
   this.establichShooters();
 
   this.gridMove = this.moveAliensGrid();
+};
+
+AliensFactory.prototype.setInitialState = function () {
+  //this.x = Settings.ALIENS_INITIAL_X_POSITION;
+  this.y = Settings.ALIENS_INITIAL_Y_POSITION;
 };
 
 AliensFactory.prototype.fillAliens = function () {
@@ -45,11 +51,6 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
   alien.y = Math.floor(i / this.itemsPerRow) * Settings.ALIEN_VERTICAL_MARGIN;
 
   return alien;
-};
-
-AliensFactory.prototype.setInitialState = function () {
-  this.x = Settings.ALIENS_INITIAL_X_POSITION;
-  this.y = Settings.ALIENS_INITIAL_Y_POSITION;
 };
 
 AliensFactory.prototype.moveAliensGrid = function () {
