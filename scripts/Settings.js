@@ -4,6 +4,7 @@ Settings.BUTTON_GREEN_LINE = 0x00ff99;
 Settings.BUTTON_YELLOW_LINE = 0xfeeb77;
 Settings.CANVAS_WIDTH = 700;
 Settings.CANVAS_HEIGHT = 500;
+Settings.START_SCENE = "game"; //"welcome";
 Settings.SPRITESHEET = "./resources/icons-sheet.json";
 Settings.SPRITESHEET_SOUND = "./resources/sound-on-off.json";
 Settings.EXPLOSION_SPRITE = "./resources/explosion.json";
@@ -19,6 +20,8 @@ Settings.PLAYER_POINTS_ADDED_FOR_KILLED_ALIEN = 15;
 
 Settings.ALIENS_INITIAL_X_POSITION = 50;
 Settings.ALIENS_INITIAL_Y_POSITION = 100;
+Settings.ALIENS_GRID_ITEMS_PER_ROW = 8;
+Settings.ALIENS_GRID_ROWS = 5;
 
 Settings.ALIEN_H_MARGIN = 30;
 Settings.ALIEN_VERTICAL_MARGIN = 35;
@@ -30,3 +33,6 @@ Settings.BULLET_LIFE_COST = 10;
 Settings.HEALTH_BAR_WIDTH = 150;
 Settings.HEALTH_BAR_HEIGHT = 20;
 Settings.HEALTH_BAR_BORDER = 1;
+
+Settings.EVENT_ACTIVATE_SCENE = "activate_scene";
+Settings.EVENT_CLEAN_SCENE = "clean_scene";

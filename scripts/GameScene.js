@@ -4,22 +4,10 @@ function GameScene() {
   this.sceneContainer = new PIXI.Container();
   this.addChild(this.sceneContainer);
 
-  // this.isLoaded = true;
-
   this.sceneName = "game";
 
   this.loadGameAssets();
 }
-// function GameScene(stage) {
-//   PIXI.Container.call(this);
-//   stage.addChild(this);
-
-//   this.isLoaded = true;
-
-//   this.sceneName = "game";
-
-//   this.loadGameAssets();
-// }
 
 GameScene.prototype = Object.create(PIXI.Container.prototype);
 
@@ -43,6 +31,7 @@ GameScene.prototype.init = function () {
 };
 
 GameScene.prototype.initPlayersPosition = function () {
+  console.log("gs init");
   PIXI.sound.play("enter");
 
   const tmPlayer = TweenMax.to(this.player, 1, {

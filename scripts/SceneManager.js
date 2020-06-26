@@ -12,21 +12,27 @@ function SceneManager() {
 SceneManager.prototype = Object.create(PIXI.Container.prototype);
 
 SceneManager.prototype.listen = function () {
-  document.addEventListener("activate_scene", this.onActivateScene.bind(this));
-  document.addEventListener("clean_scene", this.onCleanScene.bind(this));
+  document.addEventListener(
+    Settings.EVENT_ACTIVATE_SCENE,
+    this.onActivateScene.bind(this)
+  );
+  document.addEventListener(
+    Settings.EVENT_CLEAN_SCENE,
+    this.onCleanScene.bind(this)
+  );
 
   document.dispatchEvent(
-    new CustomEvent("activate_scene", { detail: { screen: "welcome" } })
+    new CustomEvent(Settings.EVENT_ACTIVATE_SCENE, {
+      detail: { screen: Settings.START_SCENE },
+    })
   );
 };
 
 SceneManager.prototype.onActivateScene = function (e) {
-  document.dispatchEvent(new Event("clean_scene"));
+  document.dispatchEvent(new Event(Settings.EVENT_CLEAN_SCENE));
 
   const screen = e.detail.screen;
   const scene = screen.charAt(0).toUpperCase() + screen.slice(1) + "Scene";
-  console.log(scene);
-
   const options = e.detail.options ? e.detail.options : null;
 
   this.activeScene = new DynamicClass(scene, options);

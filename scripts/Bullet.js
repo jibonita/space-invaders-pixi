@@ -15,3 +15,17 @@ Bullet.prototype.setInitialState = function () {
   this.isDestroyed = false;
   this.isPlayerBullet = false;
 };
+
+Bullet.prototype.fire = function (toY) {
+  PIXI.sound.play("shoot");
+
+  const tm = TweenMax.to(this, 1, {
+    y: toY,
+    ease: Power0.easeNone,
+    onUpdate: () => {
+      if (this.isDestroyed) {
+        tm.kill();
+      }
+    },
+  });
+};

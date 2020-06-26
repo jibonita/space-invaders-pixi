@@ -2,8 +2,8 @@ function AliensFactory(stage) {
   PIXI.Container.call(this);
   stage.addChild(this);
 
-  this.itemsPerRow = 5;
-  this.itemRows = 5;
+  this.itemsPerRow = Settings.ALIENS_GRID_ITEMS_PER_ROW;
+  this.itemRows = Settings.ALIENS_GRID_ROWS;
 
   this.initAliensGrid();
 }
@@ -22,7 +22,6 @@ AliensFactory.prototype.initMove = function () {
 };
 
 AliensFactory.prototype.setInitialState = function () {
-  //this.x = Settings.ALIENS_INITIAL_X_POSITION;
   this.y = Settings.ALIENS_INITIAL_Y_POSITION;
 };
 
@@ -59,7 +58,7 @@ AliensFactory.prototype.moveAliensGrid = function () {
     ease: Power0.easeNone,
     yoyoEase: true,
     onRepeat: () => {
-      this.y += 10;
+      this.y += 5;
     },
   }).repeat(-1);
 

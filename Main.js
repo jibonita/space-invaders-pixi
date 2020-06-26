@@ -14,21 +14,25 @@ function Main() {
 
   this.collisionDispatcher = new CollisionDispatcher();
 
-  this.loadResources();
+  this.loadResources().then(() => {
+    this.sceneManager = new SceneManager();
+    this.stage.addChild(this.sceneManager);
 
-  this.sceneManager = new SceneManager();
-  this.stage.addChild(this.sceneManager);
-  // this.displayWelcomeScene();
+    ticker.start();
+    ticker.add(this.update, this);
+  });
 
-  ticker.start();
-  ticker.add(this.update, this);
+  // this.sceneManager = new SceneManager();
+  // this.stage.addChild(this.sceneManager);
+
+  // ticker.start();
+  // ticker.add(this.update, this);
 
   this.attachEventListeners();
 }
 
 Main.prototype.update = function (delta) {
   if (this.sceneManager.activeScene instanceof GameScene) {
-    // if (this.gameScene && this.gameScene.isLoaded) {
     this.gameScene = this.sceneManager.activeScene;
 
     const bullets = this.gameScene.children.filter((e) => e instanceof Bullet);
@@ -84,40 +88,36 @@ Main.prototype.update = function (delta) {
 };
 
 Main.prototype.loadResources = function () {
-  PIXI.loader
-    .add("icons", Settings.SPRITESHEET)
-    .add("sound", Settings.SPRITESHEET_SOUND)
-    .add("explosion", Settings.EXPLOSION_SPRITE)
-    .add("enter", Settings.SOUND_GAME_ENTER)
-    .add("shoot", Settings.SOUND_BULLET_FIRE)
-    .add("explode", Settings.SOUND_EXPLOSION)
-    .load(this.onResourcesLoaded.bind(this));
+  return new Promise((resolve, reject) => {
+    PIXI.loader
+      .add("icons", Settings.SPRITESHEET)
+      .add("sound", Settings.SPRITESHEET_SOUND)
+      .add("explosion", Settings.EXPLOSION_SPRITE)
+      .add("enter", Settings.SOUND_GAME_ENTER)
+      .add("shoot", Settings.SOUND_BULLET_FIRE)
+      .add("explode", Settings.SOUND_EXPLOSION)
+      .load(resolve);
+  });
 };
+
+// Main.prototype.loadResources = function () {
+//   PIXI.loader
+//     .add("icons", Settings.SPRITESHEET)
+//     .add("sound", Settings.SPRITESHEET_SOUND)
+//     .add("explosion", Settings.EXPLOSION_SPRITE)
+//     .add("enter", Settings.SOUND_GAME_ENTER)
+//     .add("shoot", Settings.SOUND_BULLET_FIRE)
+//     .add("explode", Settings.SOUND_EXPLOSION)
+//     .load(this.onResourcesLoaded.bind(this));
+// };
 
 Main.prototype.onResourcesLoaded = function (loader, resources) {
   console.log("resources loaded");
-  // temp here. Put to skip Welcome screen
-  //this.displayGameScene();
 };
-
-// Main.prototype.displayWelcomeScene = function () {
-//   this.welcomeScene = new WelcomeScene(this.stage);
-// };
-
-// Main.prototype.displayGameScene = function () {
-//   this.gameScene = new GameScene(this.stage);
-//   this.welcomeScene.visible = false;
-//   if (this.gameOverScene) this.gameOverScene.visible = false;
-// };
-
-// Main.prototype.displayGameOverScene = function (params) {
-//   this.gameOverScene = new GameOverScene(this.stage, params);
-//   this.gameScene.visible = false;
-// };
 
 Main.prototype.setGameOver = function (params) {
   document.dispatchEvent(
-    new CustomEvent("activate_scene", {
+    new CustomEvent(Settings.EVENT_ACTIVATE_SCENE, {
       detail: {
         screen: "gameOver",
         options: {
@@ -127,37 +127,25 @@ Main.prototype.setGameOver = function (params) {
       },
     })
   );
-
-  // this.gameScene.isLoaded = false;
-  // this.gameScene.invaders.removeAliensGrid();
-  // this.gameScene.player.stopListen();
-
-  // this.displayGameOverScene({
-  //   ...params,
-  //   score: this.gameScene.player.score,
-  // });
 };
 
 Main.prototype.attachEventListeners = function () {
-  // document.addEventListener("start-click", () => {
-  //   this.displayGameScene();
-  // });
-
   document.addEventListener("fire", (e) => {
-    this.fireBullet(e.detail.bullet, e.detail.toY);
+    e.detail.bullet.fire(e.detail.toY);
+    // this.fireBullet(e.detail.bullet, e.detail.toY);
   });
 };
 
-Main.prototype.fireBullet = function (bullet, toY) {
-  PIXI.sound.play("shoot");
+// Main.prototype.fireBullet = function (bullet, toY) {
+//   PIXI.sound.play("shoot");
 
-  const tm = TweenMax.to(bullet, 1, {
-    y: toY,
-    ease: Power0.easeNone,
-    onUpdate: () => {
-      if (bullet.isDestroyed) {
-        tm.kill();
-      }
-    },
-  });
-};
+//   const tm = TweenMax.to(bullet, 1, {
+//     y: toY,
+//     ease: Power0.easeNone,
+//     onUpdate: () => {
+//       if (bullet.isDestroyed) {
+//         tm.kill();
+//       }
+//     },
+//   });
+// };
