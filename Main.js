@@ -22,12 +22,6 @@ function Main() {
     ticker.add(this.update, this);
   });
 
-  // this.sceneManager = new SceneManager();
-  // this.stage.addChild(this.sceneManager);
-
-  // ticker.start();
-  // ticker.add(this.update, this);
-
   this.attachEventListeners();
 }
 
@@ -100,21 +94,6 @@ Main.prototype.loadResources = function () {
   });
 };
 
-// Main.prototype.loadResources = function () {
-//   PIXI.loader
-//     .add("icons", Settings.SPRITESHEET)
-//     .add("sound", Settings.SPRITESHEET_SOUND)
-//     .add("explosion", Settings.EXPLOSION_SPRITE)
-//     .add("enter", Settings.SOUND_GAME_ENTER)
-//     .add("shoot", Settings.SOUND_BULLET_FIRE)
-//     .add("explode", Settings.SOUND_EXPLOSION)
-//     .load(this.onResourcesLoaded.bind(this));
-// };
-
-Main.prototype.onResourcesLoaded = function (loader, resources) {
-  console.log("resources loaded");
-};
-
 Main.prototype.setGameOver = function (params) {
   document.dispatchEvent(
     new CustomEvent(Settings.EVENT_ACTIVATE_SCENE, {
@@ -132,20 +111,5 @@ Main.prototype.setGameOver = function (params) {
 Main.prototype.attachEventListeners = function () {
   document.addEventListener("fire", (e) => {
     e.detail.bullet.fire(e.detail.toY);
-    // this.fireBullet(e.detail.bullet, e.detail.toY);
   });
 };
-
-// Main.prototype.fireBullet = function (bullet, toY) {
-//   PIXI.sound.play("shoot");
-
-//   const tm = TweenMax.to(bullet, 1, {
-//     y: toY,
-//     ease: Power0.easeNone,
-//     onUpdate: () => {
-//       if (bullet.isDestroyed) {
-//         tm.kill();
-//       }
-//     },
-//   });
-// };

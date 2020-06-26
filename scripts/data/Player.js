@@ -46,6 +46,20 @@ Player.prototype.stopListen = function () {
   this.listeners.forEach((listener) => listener.unsubscribe());
 };
 
+Player.prototype.move = function () {
+  this.position.x += this.vx;
+
+  const leftBound = Settings.PLAYER_INITIAL_POSITION;
+  const rightBound =
+    Settings.CANVAS_WIDTH - Settings.PLAYER_INITIAL_POSITION - this.width;
+
+  if (this.position.x < leftBound) {
+    this.position.x = leftBound;
+  } else if (this.position.x > rightBound) {
+    this.position.x = rightBound;
+  }
+};
+
 Player.prototype.createBullet = function (alien) {
   const bullet = new Bullet(this.parent);
   bullet.position.x = (this.width - bullet.width) / 2 + this.x;

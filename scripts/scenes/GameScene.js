@@ -31,14 +31,13 @@ GameScene.prototype.init = function () {
 };
 
 GameScene.prototype.initPlayersPosition = function () {
-  console.log("gs init");
   PIXI.sound.play("enter");
 
   const tmPlayer = TweenMax.to(this.player, 1, {
     x: Settings.PLAYER_INITIAL_POSITION,
     ease: Power1.easeIn,
     onComplete: () => {
-      ticker.add(this.move.bind(this, this.player));
+      ticker.add(this.player.move.bind(this.player));
       //this.getSampleBulletFromPlayer();
     },
   });
@@ -52,20 +51,6 @@ GameScene.prototype.initPlayersPosition = function () {
   });
 
   this.animations = [tmPlayer, tmInvaders];
-};
-
-GameScene.prototype.move = (obj) => {
-  obj.position.x += obj.vx;
-
-  const leftBound = Settings.PLAYER_INITIAL_POSITION;
-  const rightBound =
-    Settings.CANVAS_WIDTH - Settings.PLAYER_INITIAL_POSITION - obj.width;
-
-  if (obj.position.x < leftBound) {
-    obj.position.x = leftBound;
-  } else if (obj.position.x > rightBound) {
-    obj.position.x = rightBound;
-  }
 };
 
 GameScene.prototype.destroy = function () {
