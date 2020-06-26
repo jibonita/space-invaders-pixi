@@ -59,19 +59,16 @@ Player.prototype.fireBullet = function (bullet) {
   document.dispatchEvent(
     new CustomEvent("fire", { detail: { bullet, toY: -bullet.height } })
   );
-
-  // const tm = TweenMax.to(bullet, 1, {
-  //   y: -bullet.height,
-  //   onUpdate: () => {
-  //     if (bullet.isDestroyed) {
-  //       tm.kill();
-  //     }
-  //   },
-  // });
 };
 
 Player.prototype.updateHealth = function (cost) {
   this.health += cost;
   //** player alpha formula works in case player max life point are the initial ones
   this.alpha = this.health / Settings.PLAYER_INITIAL_HEALTH;
+};
+
+Player.prototype.destroy = function () {
+  this.stopListen();
+  this.visible = false;
+  // this.parent.removeChild(this);
 };

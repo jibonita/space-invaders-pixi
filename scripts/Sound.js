@@ -31,3 +31,7 @@ Sound.prototype.mute = function () {
   this.isSoundOn = true;
   this.toggle();
 };
+
+Sound.prototype.destroy = function () {
+  this.parent.removeChild(this);
+};

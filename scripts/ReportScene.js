@@ -1,15 +1,30 @@
-function ReportScene(stage, params) {
+function ReportScene(params) {
   PIXI.Container.call(this);
 
-  stage.addChild(this);
+  this.sceneContainer = new PIXI.Container();
+  this.addChild(this.sceneContainer);
 
   this.headingMessage = params.headingMsg;
   this.buttonLabel = params.btnLabel;
+
+  this.sceneName = "report";
 
   this.loadHeadingMessage();
 
   this.loadActionButton();
 }
+// function ReportScene(stage, params) {
+//   PIXI.Container.call(this);
+
+//   stage.addChild(this);
+
+//   this.headingMessage = params.headingMsg;
+//   this.buttonLabel = params.btnLabel;
+
+//   this.loadHeadingMessage();
+
+//   this.loadActionButton();
+// }
 
 ReportScene.prototype = Object.create(PIXI.Container.prototype);
 
@@ -33,7 +48,10 @@ ReportScene.prototype.loadActionButton = function () {
 };
 
 ReportScene.prototype.onStartGameClicked = function (e) {
-  document.dispatchEvent(new Event("start-click"));
+  // document.dispatchEvent(new Event("start-click"));
+  document.dispatchEvent(
+    new CustomEvent("activate_scene", { detail: { screen: "game" } })
+  );
 };
 
 ReportScene.prototype.onStartGameHover = function (e) {

@@ -1,11 +1,25 @@
-function GameScene(stage) {
+function GameScene() {
   PIXI.Container.call(this);
-  stage.addChild(this);
 
-  this.isLoaded = true;
+  this.sceneContainer = new PIXI.Container();
+  this.addChild(this.sceneContainer);
+
+  // this.isLoaded = true;
+
+  this.sceneName = "game";
 
   this.loadGameAssets();
 }
+// function GameScene(stage) {
+//   PIXI.Container.call(this);
+//   stage.addChild(this);
+
+//   this.isLoaded = true;
+
+//   this.sceneName = "game";
+
+//   this.loadGameAssets();
+// }
 
 GameScene.prototype = Object.create(PIXI.Container.prototype);
 
@@ -25,13 +39,13 @@ GameScene.prototype.loadGameAssets = function () {
 
 GameScene.prototype.init = function () {
   this.initPlayersPosition();
-  // this.sound.mute();
+  this.sound.mute();
 };
 
 GameScene.prototype.initPlayersPosition = function () {
   PIXI.sound.play("enter");
 
-  TweenMax.to(this.player, 1, {
+  const tmPlayer = TweenMax.to(this.player, 1, {
     x: Settings.PLAYER_INITIAL_POSITION,
     ease: Power1.easeIn,
     onComplete: () => {
@@ -40,13 +54,15 @@ GameScene.prototype.initPlayersPosition = function () {
     },
   });
 
-  TweenMax.to(this.invaders, 1, {
+  const tmInvaders = TweenMax.to(this.invaders, 1, {
     x: Settings.ALIENS_INITIAL_X_POSITION,
     ease: Power1.easeIn,
     onComplete: () => {
       this.invaders.initMove();
     },
   });
+
+  this.animations = [tmPlayer, tmInvaders];
 };
 
 GameScene.prototype.move = (obj) => {
@@ -60,6 +76,19 @@ GameScene.prototype.move = (obj) => {
     obj.position.x = leftBound;
   } else if (obj.position.x > rightBound) {
     obj.position.x = rightBound;
+  }
+};
+
+GameScene.prototype.destroy = function () {
+  this.parent.removeChild(this);
+
+  this.player.destroy();
+  this.invaders.destroy();
+  this.statistics.destroy();
+  this.sound.destroy();
+
+  if (this.animations) {
+    this.animations.forEach((a) => a.kill());
   }
 };
 

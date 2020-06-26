@@ -33,3 +33,7 @@ Statistics.prototype.loadBars = function () {
   this.scoreBar.x = this.label.width + this.healthBar.width + 50;
   this.scoreBar.style = this.basicTextStyle;
 };
+
+Statistics.prototype.destroy = function () {
+  this.parent.removeChild(this);
+};

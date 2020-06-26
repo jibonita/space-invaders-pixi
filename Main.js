@@ -15,7 +15,10 @@ function Main() {
   this.collisionDispatcher = new CollisionDispatcher();
 
   this.loadResources();
-  this.displayWelcomeScene();
+
+  this.sceneManager = new SceneManager();
+  this.stage.addChild(this.sceneManager);
+  // this.displayWelcomeScene();
 
   ticker.start();
   ticker.add(this.update, this);
@@ -24,7 +27,10 @@ function Main() {
 }
 
 Main.prototype.update = function (delta) {
-  if (this.gameScene && this.gameScene.isLoaded) {
+  if (this.sceneManager.activeScene instanceof GameScene) {
+    // if (this.gameScene && this.gameScene.isLoaded) {
+    this.gameScene = this.sceneManager.activeScene;
+
     const bullets = this.gameScene.children.filter((e) => e instanceof Bullet);
 
     this.collisionDispatcher.checkforHitPlayer(
@@ -89,41 +95,53 @@ Main.prototype.loadResources = function () {
 };
 
 Main.prototype.onResourcesLoaded = function (loader, resources) {
+  console.log("resources loaded");
   // temp here. Put to skip Welcome screen
   //this.displayGameScene();
 };
 
-Main.prototype.displayWelcomeScene = function () {
-  this.welcomeScene = new WelcomeScene(this.stage);
-};
+// Main.prototype.displayWelcomeScene = function () {
+//   this.welcomeScene = new WelcomeScene(this.stage);
+// };
 
-Main.prototype.displayGameScene = function () {
-  this.gameScene = new GameScene(this.stage);
-  this.welcomeScene.visible = false;
-  if (this.gameOverScene) this.gameOverScene.visible = false;
-};
+// Main.prototype.displayGameScene = function () {
+//   this.gameScene = new GameScene(this.stage);
+//   this.welcomeScene.visible = false;
+//   if (this.gameOverScene) this.gameOverScene.visible = false;
+// };
 
-Main.prototype.displayGameOverScene = function (params) {
-  this.gameOverScene = new GameOverScene(this.stage, params);
-  this.gameScene.visible = false;
-};
+// Main.prototype.displayGameOverScene = function (params) {
+//   this.gameOverScene = new GameOverScene(this.stage, params);
+//   this.gameScene.visible = false;
+// };
 
 Main.prototype.setGameOver = function (params) {
-  console.log(params);
-  this.gameScene.isLoaded = false;
-  this.gameScene.invaders.removeAliensGrid();
-  this.gameScene.player.stopListen();
+  document.dispatchEvent(
+    new CustomEvent("activate_scene", {
+      detail: {
+        screen: "gameOver",
+        options: {
+          ...params,
+          score: this.gameScene.player.score,
+        },
+      },
+    })
+  );
 
-  this.displayGameOverScene({
-    ...params,
-    score: this.gameScene.player.score,
-  });
+  // this.gameScene.isLoaded = false;
+  // this.gameScene.invaders.removeAliensGrid();
+  // this.gameScene.player.stopListen();
+
+  // this.displayGameOverScene({
+  //   ...params,
+  //   score: this.gameScene.player.score,
+  // });
 };
 
 Main.prototype.attachEventListeners = function () {
-  document.addEventListener("start-click", () => {
-    this.displayGameScene();
-  });
+  // document.addEventListener("start-click", () => {
+  //   this.displayGameScene();
+  // });
 
   document.addEventListener("fire", (e) => {
     this.fireBullet(e.detail.bullet, e.detail.toY);
