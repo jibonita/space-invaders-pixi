@@ -14,3 +14,9 @@ Space Invaders game w/ PixiJS &amp; Greensock
 - The player should not "die" from one hit. Its health should get from 100 to 0 in a couple of hits.
 - When an enemy is destroyed some kind of explosion animation should be played at the position the enemy was when it was hit (the explosion should not move together with the rest of the enemies). You can use something like this.
 - When a bullet hits an enemy or the player the bullet disappears.
+
+## Run in dev mode
+
+npm install
+
+npm run watch
