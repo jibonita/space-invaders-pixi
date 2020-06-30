@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import sound from "pixi-sound";
+// import sound from "pixi-sound";
 import Settings from "../Settings";
 
 function Bullet(stage) {
@@ -21,7 +21,7 @@ Bullet.prototype.setInitialState = function () {
 };
 
 Bullet.prototype.fire = function (toY) {
-  PIXI.sound.play("shoot");
+  // PIXI.sound.play("shoot");
 
   const tm = TweenMax.to(this, 1, {
     y: toY,

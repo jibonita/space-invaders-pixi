@@ -34,7 +34,7 @@ GameScene.prototype.loadGameAssets = function () {
 
 GameScene.prototype.init = function () {
   this.initPlayersPosition();
-  this.sound.mute();
+  // this.sound.mute();
 };
 
 GameScene.prototype.initPlayersPosition = function () {

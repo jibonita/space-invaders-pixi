@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js";
 import sound from "pixi-sound";
+import Settings from "./scripts/Settings";
 import CollisionDispatcher from "./scripts/CollisionDispatcher";
 import SceneManager from "./scripts/SceneManager";
-import Settings from "./scripts/Settings";
 import GameScene from "./scripts/scenes/GameScene";
 import Bullet from "./scripts/data/Bullet";
 import Explosion from "./scripts/data/Explosion";
@@ -71,6 +71,7 @@ Main.prototype.update = function (delta) {
         this.gameScene.player.score +=
           Settings.PLAYER_POINTS_ADDED_FOR_KILLED_ALIEN;
         alien.parent.deleteAlien(alien);
+        // COMMENT: May be dispatch event 'explode' here??
         new Explosion(
           this.gameScene,
           alien.x + this.gameScene.invaders.x,
@@ -120,6 +121,7 @@ Main.prototype.setGameOver = function (params) {
 Main.prototype.attachEventListeners = function () {
   document.addEventListener("fire", (e) => {
     e.detail.bullet.fire(e.detail.toY);
+    PIXI.sound.play("shoot");
   });
 };
 

@@ -17,6 +17,12 @@ Space Invaders game w/ PixiJS &amp; Greensock
 
 ## Run in dev mode
 
-npm install
+1. npm install
 
-npm run watch
+webpack watch:
+
+### npm run watch
+
+start with webpack-dev-server:
+
+2. ### npm start

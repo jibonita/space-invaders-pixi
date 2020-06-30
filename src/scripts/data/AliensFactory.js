@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import TweenMax from "gsap";
 import Settings from "../Settings";
 import Alien from "./Alien";
 import Bullet from "./Bullet";
