@@ -15,14 +15,18 @@ Space Invaders game w/ PixiJS &amp; Greensock
 - When an enemy is destroyed some kind of explosion animation should be played at the position the enemy was when it was hit (the explosion should not move together with the rest of the enemies). You can use something like this.
 - When a bullet hits an enemy or the player the bullet disappears.
 
-## Run in dev mode
+## Run in dev mode. Start with webpack-dev-server
 
 1. npm install
 
-webpack watch:
+2. npm start
 
-### npm run watch
+   _Bundle generated in memory_
 
-start with webpack-dev-server:
+### Webpack generate bundle file:
 
-2. ### npm start
+npm run build
+
+### Webpack watch:
+
+npm run watch

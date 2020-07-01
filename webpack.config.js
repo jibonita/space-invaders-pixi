@@ -1,5 +1,4 @@
 const path = require("path");
-// const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
@@ -7,25 +6,17 @@ module.exports = {
   entry: "./src/Main.js",
   devtool: "inline-source-map",
   devServer: {
+    publicPath: "/dist/",
     contentBase: path.join(__dirname),
     watchContentBase: true,
+    compress: true,
     watchOptions: {
       poll: true,
     },
   },
-  plugins: [
-    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
-    // new HtmlWebpackPlugin({
-    //   title: "Output Management",
-    // }),
-  ],
+  plugins: [new CleanWebpackPlugin({ cleanStaleWebpackAssets: false })],
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
   },
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: "all",
-  //   },
-  // },
 };

@@ -1,6 +1,4 @@
 import ReportScene from "./ReportScene";
-import * as PIXI from "pixi.js";
-import sound from "pixi-sound";
 
 function WelcomeScene() {
   ReportScene.call(this, {
@@ -9,8 +7,6 @@ function WelcomeScene() {
   });
 
   this.sceneName = "welcome";
-
-  PIXI.sound.play("enter");
 }
 
 WelcomeScene.prototype = Object.create(ReportScene.prototype);

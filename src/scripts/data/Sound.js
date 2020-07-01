@@ -35,6 +35,11 @@ Sound.prototype.mute = function () {
   this.toggle();
 };
 
+Sound.prototype.unmute = function () {
+  this.isSoundOn = false;
+  this.toggle();
+};
+
 Sound.prototype.destroy = function () {
   this.parent.removeChild(this);
 };

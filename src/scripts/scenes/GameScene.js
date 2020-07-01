@@ -34,10 +34,12 @@ GameScene.prototype.loadGameAssets = function () {
 
 GameScene.prototype.init = function () {
   this.initPlayersPosition();
-  // this.sound.mute();
+  this.sound.unmute();
 };
 
 GameScene.prototype.initPlayersPosition = function () {
+  PIXI.sound.play("enter");
+
   const tmPlayer = TweenMax.to(this.player, 1, {
     x: Settings.PLAYER_INITIAL_POSITION,
     ease: Power1.easeIn,
