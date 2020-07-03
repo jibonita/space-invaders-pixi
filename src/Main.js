@@ -13,13 +13,11 @@ function Main() {
   canvas.height = Settings.CANVAS_HEIGHT;
 
   this.stage = new PIXI.Container();
-  this.renderer = PIXI.autoDetectRenderer(
-    Settings.CANVAS_WIDTH,
-    Settings.CANVAS_HEIGHT,
-    {
-      view: canvas,
-    }
-  );
+  this.renderer = PIXI.autoDetectRenderer(Settings.CANVAS_WIDTH, Settings.CANVAS_HEIGHT, {
+    view: canvas,
+  });
+
+  console.clear();
 
   this.collisionDispatcher = new CollisionDispatcher();
 
@@ -68,8 +66,7 @@ Main.prototype.update = function (delta) {
     invaderShooters
       .filter((alien) => alien.isDestroyed)
       .forEach((alien) => {
-        this.gameScene.player.score +=
-          Settings.PLAYER_POINTS_ADDED_FOR_KILLED_ALIEN;
+        this.gameScene.player.score += Settings.PLAYER_POINTS_ADDED_FOR_KILLED_ALIEN;
         alien.parent.deleteAlien(alien);
         // COMMENT: May be dispatch event 'explode' here??
         new Explosion(
@@ -117,11 +114,19 @@ Main.prototype.setGameOver = function (params) {
     })
   );
 };
-
+let targetIndex = [3, 7, 3, 6];
+targetIndex = [4, 8, 3, 6, 0, 2, 1, 2];
+// targetIndex = [0, 4, 3, 6];
+// targetIndex = [1, 5, 0, 3];
 Main.prototype.attachEventListeners = function () {
   document.addEventListener("fire", (e) => {
-    e.detail.bullet.fire(e.detail.toY);
-    PIXI.sound.play("shoot");
+    this.gameScene.invaders.deleteAlien(targetIndex[0]);
+    targetIndex.shift();
+    this.gameScene.invaders.deleteAlien(targetIndex[0]);
+    targetIndex.shift();
+
+    // e.detail.bullet.fire(e.detail.toY);
+    // PIXI.sound.play("shoot");
   });
 };
 

@@ -25,6 +25,9 @@ AliensFactory.prototype.initMove = function () {
   this.establichShooters();
 
   this.gridMove = this.moveAliensGrid();
+
+  // temp code
+  drawHorizontalBorders.call(this);
 };
 
 AliensFactory.prototype.setInitialState = function () {
@@ -46,7 +49,7 @@ AliensFactory.prototype.fillAliens = function () {
 AliensFactory.prototype.establichShooters = function () {
   this.assignInitialShooters();
 
-  this.subscribeShooting();
+  // this.subscribeShooting();
 };
 
 AliensFactory.prototype.createAlien = function (i, iconIndex) {
@@ -59,12 +62,13 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
 };
 
 AliensFactory.prototype.moveAliensGrid = function () {
-  const tm = TweenMax.to(this, 3, {
+  // return null;
+  const tm = TweenMax.to(this, 10, {
     x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION,
     ease: Power0.easeNone,
     yoyoEase: true,
     onRepeat: () => {
-      this.y += 5;
+      //this.y += 5;
     },
   }).repeat(-1);
 
@@ -88,8 +92,21 @@ AliensFactory.prototype.deleteAlien = function (hitItem) {
   const aliensAboveHit = this.children.filter((elem) => elem.x === child.x);
   if (aliensAboveHit.length) {
     aliensAboveHit[0].canShoot = true;
+  } else {
+    if (isFirstColumn(child)) {
+      //this.gridMove.kill();
+      this.shiftLeftAlienGrid();
+    }
+
+    if (this.gridMove) {
+      updateFromTo.call(this.gridMove, {
+        x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION * 2,
+      });
+      // this.gridMove.updateFromTo({
+      //   x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION * 2,
+      // });
+    }
   }
-  this.getShooters();
 };
 
 AliensFactory.prototype.shoot = function (alien) {
@@ -156,4 +173,63 @@ function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function isFirstColumn(node) {
+  return node.x === 0;
+}
+
+function drawHorizontalBorders() {
+  const graphic = new PIXI.Graphics();
+
+  graphic.lineStyle(2, Settings.BUTTON_GREEN_LINE, 1);
+  graphic.drawRect(
+    Settings.ALIENS_INITIAL_X_POSITION,
+    Settings.ALIENS_INITIAL_Y_POSITION,
+    Settings.CANVAS_WIDTH - 2 * Settings.ALIENS_INITIAL_X_POSITION,
+    this.height * 2
+  );
+  graphic.endFill();
+
+  this.parent.addChild(graphic);
+}
+
+AliensFactory.prototype.shiftLeftAlienGrid = function () {
+  if (!this.children.length) {
+    return;
+  }
+
+  while (this.topLeftAlien().x !== 0) {
+    const mostLeftAlienX = this.topLeftAlien().x;
+    console.log(this.x);
+    // this.x -= mostLeftAlienX - 5;
+
+    this.children.map((c) => {
+      if (c instanceof Alien) {
+        c.x -= c.width + Settings.ALIEN_H_MARGIN;
+      }
+    });
+  }
+  this.calculateBounds(); // does this do something??
+};
+
+AliensFactory.prototype.topLeftAlien = function () {
+  return this.children[this.children.length - 1];
+};
+
 export default AliensFactory;
+
+// TweenMax.prototype.updateFromTo = function (vars) {
+function updateFromTo(vars) {
+  var self = this,
+    p;
+  for (p in vars) {
+    self.vars[p] = vars[p];
+  }
+
+  var pt = self._firstPT;
+  while (pt) {
+    pt.c = vars.x;
+    pt.s = Settings.ALIENS_INITIAL_X_POSITION;
+    pt = pt._next;
+  }
+  return self;
+}
