@@ -1,9 +1,6 @@
 function CollisionDispatcher() {}
 
-CollisionDispatcher.prototype.checkforHitPlayer = function (
-  player,
-  bulletsCollection
-) {
+CollisionDispatcher.prototype.checkforHitPlayer = function (player, bulletsCollection) {
   bulletsCollection.some((bullet) => {
     const isCollision = this.checkCollision(bullet, player);
     if (isCollision) {
@@ -14,19 +11,13 @@ CollisionDispatcher.prototype.checkforHitPlayer = function (
   });
 };
 
-CollisionDispatcher.prototype.checkInvadersWalkUponPlayer = function (
-  player,
-  aliensGrid
-) {
+CollisionDispatcher.prototype.checkInvadersWalkUponPlayer = function (player, aliensGrid) {
   if (this.checkCollision(player, aliensGrid)) {
     player.updateHealth(-player.health);
   }
 };
 
-CollisionDispatcher.prototype.checkforHitAlien = function (
-  bulletsCollection,
-  aliensCollection
-) {
+CollisionDispatcher.prototype.checkforHitAlien = function (bulletsCollection, aliensCollection) {
   const aliensToKill = aliensCollection;
   aliensToKill.forEach((alien) => {
     bulletsCollection.some((bullet) => {
@@ -61,9 +52,7 @@ CollisionDispatcher.prototype.checkCollision = function (missile, target) {
     target.y + target.height,
   ];
 
-  return (
-    mStartX < tEndX && mEndX > tStartX && mStartY < tEndY && mEndY > tStartY
-  );
+  return mStartX < tEndX && mEndX > tStartX && mStartY < tEndY && mEndY > tStartY;
 };
 
 export default CollisionDispatcher;
