@@ -27,9 +27,6 @@ AliensFactory.prototype.initMove = function () {
   this.establichShooters();
 
   this.gridMove = this.moveAliensGrid();
-
-  // temp code
-  drawMovementAreaBorders.call(this);
 };
 
 AliensFactory.prototype.setInitialState = function () {
@@ -67,22 +64,6 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
   return alien;
 };
 
-/*
-AliensFactory.prototype.moveAliensGrid_OLD = function () {
-  // return null;
-  const tm = TweenMax.to(this, 25, {
-    x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION,
-    ease: Power0.easeNone,
-    yoyoEase: true,
-    onRepeat: () => {
-      // this.y += 5;
-    },
-  }).repeat(-1);
-
-  return tm;
-};
-*/
-
 AliensFactory.prototype.removeAliensGrid = function () {
   if (this.gridMove) {
     this.gridMove.kill();
@@ -94,12 +75,9 @@ AliensFactory.prototype.removeAliensGrid = function () {
 };
 
 AliensFactory.prototype.deleteAlien = function (hitItem) {
-  // TODO::
-  // this.updateShootersAndBounds()
-
   const child = this.removeAlienFromGrid(hitItem);
 
-  // const aliensAboveHit = this.children.filter((elem) => elem.x === child.x);
+  // TODO:: this.updateShootersAndBounds()
   const aliensAboveHit = this.aliens.filter((elem) => elem.x === child.x);
   if (aliensAboveHit.length) {
     aliensAboveHit[0].canShoot = true;
@@ -109,7 +87,6 @@ AliensFactory.prototype.deleteAlien = function (hitItem) {
 };
 
 AliensFactory.prototype.shoot = function (alien) {
-  // if (this.children.length) {
   if (this.aliens.length) {
     this.fireBullet(this.createBullet(alien));
   } else {
@@ -144,7 +121,7 @@ AliensFactory.prototype.applyShot = function (delta) {
   if (ticker.framesCount % Settings.ALIEN_SHOOT_EACH_X_FRAMES == 0) {
     const shooters = this.getShooters();
     const alienShooter = shooters[randomInt(0, shooters.length - 1)];
-    // this.shoot(alienShooter);
+    this.shoot(alienShooter);
   }
 };
 
@@ -154,14 +131,12 @@ AliensFactory.prototype.unsubscribeShooting = function () {
 
 AliensFactory.prototype.assignInitialShooters = function () {
   for (let i = 0; i < this.itemsPerRow; i++) {
-    // this.children[i].canShoot = true;
     this.aliens[i].canShoot = true;
   }
 };
 
 AliensFactory.prototype.getShooters = function () {
   const shooters = this.aliens.filter((a) => a.canShoot);
-  // const shooters = this.children.filter((a) => a.canShoot);
   return shooters;
 };
 
@@ -202,7 +177,7 @@ AliensFactory.prototype.moveAliensGrid = function () {
 AliensFactory.prototype.moveAliensGridRec = function (toX, dir, duration) {
   return TweenMax.to(this, duration, {
     x: toX,
-    //y: "+=5",
+    y: "+=5",
     data: { dir },
     ease: Power0.easeNone,
     onComplete: () => {
@@ -224,7 +199,6 @@ AliensFactory.prototype.mostLeftX = function () {
 
 AliensFactory.prototype.topLeftAlien = function () {
   return this.aliens[this.aliens.length - 1];
-  // return this.children[this.children.length - 1];
 };
 
 AliensFactory.prototype.addDummyLeftBoundSprite = function () {
