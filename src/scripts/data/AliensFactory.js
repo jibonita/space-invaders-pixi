@@ -3,6 +3,7 @@ import TweenMax from "gsap";
 import Settings from "../Settings";
 import Alien from "./Alien";
 import Bullet from "./Bullet";
+import { settings } from "pixi.js/lib/core";
 
 function AliensFactory(stage) {
   PIXI.Container.call(this);
@@ -66,9 +67,10 @@ AliensFactory.prototype.createAlien = function (i, iconIndex) {
   return alien;
 };
 
-AliensFactory.prototype.moveAliensGrid = function () {
-  //  return null;
-  const tm = TweenMax.to(this, 5, {
+/*
+AliensFactory.prototype.moveAliensGrid_OLD = function () {
+  // return null;
+  const tm = TweenMax.to(this, 25, {
     x: Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION,
     ease: Power0.easeNone,
     yoyoEase: true,
@@ -79,6 +81,7 @@ AliensFactory.prototype.moveAliensGrid = function () {
 
   return tm;
 };
+*/
 
 AliensFactory.prototype.removeAliensGrid = function () {
   if (this.gridMove) {
@@ -91,18 +94,10 @@ AliensFactory.prototype.removeAliensGrid = function () {
 };
 
 AliensFactory.prototype.deleteAlien = function (hitItem) {
-  this.leftpad.width = this.mostLeftX();
-
   // TODO::
-  // this.removeAlien()
-  // this.updateShooters()
+  // this.updateShootersAndBounds()
 
-  // const child = isNaN(hitItem) ? hitItem : this.getChildAt(hitItem);
-  const child = isNaN(hitItem) ? hitItem : this.aliens[hitItem];
-  this.aliens = this.aliens.filter((alien) => {
-    return alien.x !== child.x || alien.y !== child.y;
-  });
-  this.removeChild(child);
+  const child = this.removeAlienFromGrid(hitItem);
 
   // const aliensAboveHit = this.children.filter((elem) => elem.x === child.x);
   const aliensAboveHit = this.aliens.filter((elem) => elem.x === child.x);
@@ -176,15 +171,51 @@ AliensFactory.prototype.destroy = function () {
 };
 
 AliensFactory.prototype.updateGridBounds = function (removedColumn) {
-  this.leftpad.width = this.mostLeftX();
-
-  const left = Settings.ALIENS_INITIAL_X_POSITION - this.mostLeftX();
-  const right =
-    Settings.CANVAS_WIDTH - Settings.ALIENS_INITIAL_X_POSITION - this.width + this.mostLeftX();
-
-  if (this.gridMove) {
-    updateFromTo.call(this.gridMove, { xFrom: left, x: right - this.mostLeftX() });
+  const direction = +this.gridMove.data.dir;
+  if (isFirstColumn.call(this, removedColumn) && direction === Settings.DIR_LEFT) {
+    const left = Settings.ALIENS_INITIAL_X_POSITION - this.mostLeftX();
+    this.gridMove = calculateSpeed.call(this, left, direction);
   }
+
+  if (isLastColumn.call(this, removedColumn) && direction === Settings.DIR_RIGHT) {
+    const right =
+      Settings.CANVAS_WIDTH - Settings.ALIENS_INITIAL_X_POSITION - this.width + this.mostLeftX();
+    this.gridMove = calculateSpeed.call(this, right, direction);
+  }
+};
+
+AliensFactory.prototype.moveAliensGrid = function () {
+  this.initialGridTrayectoryLength =
+    Settings.CANVAS_WIDTH -
+    Settings.ALIENS_LEFT_RIGHT_MARGIN -
+    this.width -
+    Settings.ALIENS_INITIAL_X_POSITION;
+  this.initialGridSpeed = this.initialGridTrayectoryLength / Settings.ALIENS_INITIAL_GRID_MOVE_TIME;
+
+  return this.moveAliensGridRec(
+    Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION,
+    Settings.DIR_RIGHT,
+    Settings.ALIENS_INITIAL_GRID_MOVE_TIME
+  );
+};
+
+AliensFactory.prototype.moveAliensGridRec = function (toX, dir, duration) {
+  return TweenMax.to(this, duration, {
+    x: toX,
+    //y: "+=5",
+    data: { dir },
+    ease: Power0.easeNone,
+    onComplete: () => {
+      toX = !dir
+        ? Settings.ALIENS_INITIAL_X_POSITION - this.mostLeftX()
+        : Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION;
+
+      const path = Math.abs(this.x - toX);
+      duration = path / this.initialGridSpeed;
+
+      this.gridMove = this.moveAliensGridRec(toX, !dir, duration);
+    },
+  });
 };
 
 AliensFactory.prototype.mostLeftX = function () {
@@ -197,10 +228,20 @@ AliensFactory.prototype.topLeftAlien = function () {
 };
 
 AliensFactory.prototype.addDummyLeftBoundSprite = function () {
-  this.leftpad = new PIXI.Sprite(PIXI.utils.TextureCache[`alien0.png`]);
-  this.leftpad.width = 0;
+  this.leftpad = new PIXI.Sprite(PIXI.utils.TextureCache[Settings.DUMMY_BLACK_SPRITE]);
+  this.leftpad.width = 25;
   this.leftpad.x = 0;
   this.addChild(this.leftpad);
+};
+
+AliensFactory.prototype.removeAlienFromGrid = function (hitItem) {
+  const child = isNaN(hitItem) ? hitItem : this.aliens[hitItem];
+  this.aliens = this.aliens.filter((alien) => {
+    return alien.x !== child.x || alien.y !== child.y;
+  });
+  this.removeChild(child);
+
+  return child;
 };
 
 // ----- helpers
@@ -210,6 +251,25 @@ function randomInt(min, max) {
 
 function isFirstColumn(node) {
   return node.x < this.mostLeftX();
+}
+
+function isLastColumn(node) {
+  return node.x > this.width;
+}
+
+function calculateSpeed(value, direction) {
+  const animation = this.gridMove;
+
+  const curToX = animation.vars.x;
+  const addnlS = Math.abs(value - curToX);
+
+  const curS = Math.abs(animation._firstPT.c);
+  const passedS = animation.progress() * curS;
+
+  const timeLeft = (curS - passedS + addnlS) / this.initialGridSpeed;
+
+  animation.kill();
+  return this.moveAliensGridRec(value, direction, timeLeft);
 }
 
 function drawMovementAreaBorders() {
@@ -225,51 +285,6 @@ function drawMovementAreaBorders() {
   graphic.endFill();
 
   this.parent.addChild(graphic);
-}
-
-function updateFromTo(vars) {
-  var self = this,
-    curRatio = self.ratio,
-    p;
-  for (p in vars) {
-    self.vars[p] = vars[p];
-  }
-  console.log("ratio:", curRatio, ", _time=", self._time, ", x=", self.vars.x);
-
-  var inv = 1 / (1 - curRatio);
-  var pt = self._firstPT;
-
-  let before = { ...pt };
-  let after = pt;
-  console.log("s:", pt.s, ", c: ", pt.c);
-  while (pt) {
-    if (vars.x) {
-      pt.c = vars.x - vars.xFrom;
-    }
-    if (vars.xFrom) {
-      pt.s = vars.xFrom;
-    }
-    after = pt;
-    console.log("After// s:", pt.s, ", c: ", pt.c);
-    pt = pt._next;
-  }
-
-  const pointX = curRatio * before.c - before.s;
-  console.log("before.c / self.duration : ", before.c, self.duration());
-  const oldSpeed = before.c / self.duration();
-  console.log("oldTime:", self.time());
-  console.log("after.c / oldSpeed; = ", after.c, oldSpeed);
-  const newDuration = after.c / oldSpeed;
-  console.log("newDur: ", newDuration);
-
-  // self.duration(newDuration);
-
-  // console.log(self);
-  // console.log("time: ", self.time());
-  // console.log("progress: ", self.progress());
-
-  //self.kill();
-  return self;
 }
 
 export default AliensFactory;

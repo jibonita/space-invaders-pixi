@@ -118,28 +118,28 @@ Main.prototype.setGameOver = function (params) {
 let targetIndex = [3, 7, 3, 6];
 targetIndex = [4, 8, 3, 6, 0, 2, 1, 2, 0, 0]; // 1-2-5-3-4
 targetIndex = [4, 8, 3, 6, 2, 4, 1, 2, 0, 0, 4, 8]; // 1-2-3-4-5
-// targetIndex = [4, 8, 0, 3, 2, 4, 1, 2, 0,0]; // 1-5-2-3-4
+// targetIndex = [4, 8, 0, 3, 2, 4, 1, 2, 0, 0]; // 1-5-2-3-4
 
 // targetIndex = [4, 8, 0, 3, 0, 2, 1, 2]; //1-5-4-2
 // targetIndex = [3, 7, 3, 6, 0, 2, 1, 2, 0, 0]; //2-1-5-3
-// targetIndex = [0, 4, 3, 6, 2, 4, 1, 2, 0, 0]; //5-1-2-3-4
-// targetIndex = [1, 5, 0, 3];
-
-// targetIndex = [4, 9, 3, 8, 0, 5, 2, 7, 1, 6]; // 1-2-5-3-4
+targetIndex = [0, 4, 3, 6, 2, 4, 1, 2, 0, 0]; //5-1-2-3-4
+targetIndex = [1, 5, 0, 3, 2, 4, 1, 2, 0, 0]; //4-5-1-2-3
+// targetIndex = [1, 5, 0, 3, 0, 2, 0, 1, 0, 0]; //4-5-3-2-1
+// targetIndex = [0, 4, 0, 3, 0, 2, 0, 1, 0, 0]; //5-4-3-2-1
 
 Main.prototype.attachEventListeners = function () {
   document.addEventListener("fire", (e) => {
-    this.gameScene.invaders.deleteAlien(targetIndex[0]);
-    targetIndex.shift();
-    //   this.gameScene.invaders.deleteAlien(targetIndex[0]);
-    //   targetIndex.shift();
+    // this.gameScene.invaders.deleteAlien(targetIndex[0]);
+    // targetIndex.shift();
+    // this.gameScene.invaders.deleteAlien(targetIndex[0]);
+    // targetIndex.shift();
     // this.gameScene.invaders.deleteAlien(targetIndex[0]);
     // targetIndex.shift();
     // this.gameScene.invaders.deleteAlien(targetIndex[0]);
     // targetIndex.shift();
 
-    // e.detail.bullet.fire(e.detail.toY);
-    // PIXI.sound.play("shoot");
+    e.detail.bullet.fire(e.detail.toY);
+    PIXI.sound.play("shoot");
   });
 };
 
