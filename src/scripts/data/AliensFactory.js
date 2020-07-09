@@ -1,9 +1,9 @@
 import * as PIXI from "pixi.js";
 import TweenMax from "gsap";
 import Settings from "../Settings";
+import Util from "../utils/Util";
 import Alien from "./Alien";
 import Bullet from "./Bullet";
-import { settings } from "pixi.js/lib/core";
 
 function AliensFactory(stage) {
   PIXI.Container.call(this);
@@ -120,7 +120,7 @@ AliensFactory.prototype.applyShot = function (delta) {
 
   if (ticker.framesCount % Settings.ALIEN_SHOOT_EACH_X_FRAMES == 0) {
     const shooters = this.getShooters();
-    const alienShooter = shooters[randomInt(0, shooters.length - 1)];
+    const alienShooter = shooters[Util.randomInt(0, shooters.length - 1)];
     this.shoot(alienShooter);
   }
 };
@@ -147,15 +147,15 @@ AliensFactory.prototype.destroy = function () {
 
 AliensFactory.prototype.updateGridBounds = function (removedColumn) {
   const direction = +this.gridMove.data.dir;
-  if (isFirstColumn.call(this, removedColumn) && direction === Settings.DIR_LEFT) {
+  if (Util.isFirstColumn.call(this, removedColumn) && direction === Settings.DIR_LEFT) {
     const left = Settings.ALIENS_INITIAL_X_POSITION - this.mostLeftX();
-    this.gridMove = calculateSpeed.call(this, left, direction);
+    this.gridMove = this.calculateSpeed(left, direction);
   }
 
-  if (isLastColumn.call(this, removedColumn) && direction === Settings.DIR_RIGHT) {
+  if (Util.isLastColumn.call(this, removedColumn) && direction === Settings.DIR_RIGHT) {
     const right =
       Settings.CANVAS_WIDTH - Settings.ALIENS_INITIAL_X_POSITION - this.width + this.mostLeftX();
-    this.gridMove = calculateSpeed.call(this, right, direction);
+    this.gridMove = this.calculateSpeed(right, direction);
   }
 };
 
@@ -218,20 +218,7 @@ AliensFactory.prototype.removeAlienFromGrid = function (hitItem) {
   return child;
 };
 
-// ----- helpers
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function isFirstColumn(node) {
-  return node.x < this.mostLeftX();
-}
-
-function isLastColumn(node) {
-  return node.x > this.width;
-}
-
-function calculateSpeed(value, direction) {
+AliensFactory.prototype.calculateSpeed = function (value, direction) {
   const animation = this.gridMove;
 
   const curToX = animation.vars.x;
@@ -244,21 +231,6 @@ function calculateSpeed(value, direction) {
 
   animation.kill();
   return this.moveAliensGridRec(value, direction, timeLeft);
-}
-
-function drawMovementAreaBorders() {
-  const graphic = new PIXI.Graphics();
-
-  graphic.lineStyle(2, Settings.BUTTON_GREEN_LINE, 1);
-  graphic.drawRect(
-    Settings.ALIENS_INITIAL_X_POSITION,
-    Settings.ALIENS_INITIAL_Y_POSITION,
-    Settings.CANVAS_WIDTH - 2 * Settings.ALIENS_INITIAL_X_POSITION,
-    this.height * 2
-  );
-  graphic.endFill();
-
-  this.parent.addChild(graphic);
-}
+};
 
 export default AliensFactory;

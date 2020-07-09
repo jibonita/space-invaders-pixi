@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import Settings from "../Settings";
-import keyboard from "../keyboardCatcher";
+import keyboard from "../utils/keyboardCatcher";
 import Bullet from "./Bullet";
 
 function Player(stage) {
@@ -55,8 +55,7 @@ Player.prototype.move = function () {
   this.position.x += this.vx;
 
   const leftBound = Settings.PLAYER_INITIAL_POSITION;
-  const rightBound =
-    Settings.CANVAS_WIDTH - Settings.PLAYER_INITIAL_POSITION - this.width;
+  const rightBound = Settings.CANVAS_WIDTH - Settings.PLAYER_INITIAL_POSITION - this.width;
 
   if (this.position.x < leftBound) {
     this.position.x = leftBound;
@@ -75,14 +74,12 @@ Player.prototype.createBullet = function (alien) {
 };
 
 Player.prototype.fireBullet = function (bullet) {
-  document.dispatchEvent(
-    new CustomEvent("fire", { detail: { bullet, toY: -bullet.height } })
-  );
+  document.dispatchEvent(new CustomEvent("fire", { detail: { bullet, toY: -bullet.height } }));
 };
 
 Player.prototype.updateHealth = function (cost) {
   this.health += cost;
-  //** player alpha formula works in case player max life point are the initial ones
+  //** player alpha formula works in case player max life points are the initial ones
   this.alpha = this.health / Settings.PLAYER_INITIAL_HEALTH;
 };
 

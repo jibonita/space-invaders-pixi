@@ -1,6 +1,6 @@
-import WelcomeScene from "./scenes/WelcomeScene";
-import GameScene from "./scenes/GameScene";
-import GameOverScene from "./scenes/GameOverScene";
+import WelcomeScene from "../scenes/WelcomeScene";
+import GameScene from "../scenes/GameScene";
+import GameOverScene from "../scenes/GameOverScene";
 
 const sceneClasses = {
   WelcomeScene,

@@ -25,9 +25,7 @@ Statistics.prototype.setInitialState = function () {
 };
 
 Statistics.prototype.loadBars = function () {
-  this.label = this.addChild(
-    new PIXI.Text("Player health", this.basicTextStyle)
-  );
+  this.label = this.addChild(new PIXI.Text("Player health", this.basicTextStyle));
 
   this.healthBar = new HealthBar(this);
 

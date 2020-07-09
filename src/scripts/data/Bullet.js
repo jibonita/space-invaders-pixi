@@ -21,8 +21,6 @@ Bullet.prototype.setInitialState = function () {
 };
 
 Bullet.prototype.fire = function (toY) {
-  // PIXI.sound.play("shoot");
-
   const tm = TweenMax.to(this, 1, {
     y: toY,
     ease: Power0.easeNone,

@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import Settings from "./Settings";
-import DynamicClass from "./ProxyClass";
+import DynamicClass from "./utils/ProxyClass";
 import GameScene from "./scenes/GameScene";
 import GameOverScene from "./scenes/GameOverScene";
 import WelcomeScene from "./scenes/WelcomeScene";
@@ -19,14 +19,8 @@ function SceneManager() {
 SceneManager.prototype = Object.create(PIXI.Container.prototype);
 
 SceneManager.prototype.listen = function () {
-  document.addEventListener(
-    Settings.EVENT_ACTIVATE_SCENE,
-    this.onActivateScene.bind(this)
-  );
-  document.addEventListener(
-    Settings.EVENT_CLEAN_SCENE,
-    this.onCleanScene.bind(this)
-  );
+  document.addEventListener(Settings.EVENT_ACTIVATE_SCENE, this.onActivateScene.bind(this));
+  document.addEventListener(Settings.EVENT_CLEAN_SCENE, this.onCleanScene.bind(this));
 
   document.dispatchEvent(
     new CustomEvent(Settings.EVENT_ACTIVATE_SCENE, {

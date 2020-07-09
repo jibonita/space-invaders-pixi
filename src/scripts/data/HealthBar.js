@@ -35,15 +35,7 @@ HealthBar.prototype.setInitialState = function () {
   );
 };
 
-HealthBar.prototype.createBar = function (
-  x,
-  y,
-  width,
-  height,
-  color,
-  borderWidth,
-  borderColor
-) {
+HealthBar.prototype.createBar = function (x, y, width, height, color, borderWidth, borderColor) {
   const graphic = new PIXI.Graphics();
   graphic.lineStyle(borderWidth, borderColor, 1);
   graphic.beginFill(color);
@@ -54,10 +46,7 @@ HealthBar.prototype.createBar = function (
 
 HealthBar.prototype.update = function (percent) {
   TweenMax.to(this.outer, 1, {
-    width:
-      percent > 0
-        ? Settings.HEALTH_BAR_WIDTH * percent - Settings.HEALTH_BAR_BORDER
-        : 0,
+    width: percent > 0 ? Settings.HEALTH_BAR_WIDTH * percent - Settings.HEALTH_BAR_BORDER : 0,
   });
 };
 

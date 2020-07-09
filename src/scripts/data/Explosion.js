@@ -3,9 +3,7 @@ import * as PIXI from "pixi.js";
 function Explosion(stage, x, y) {
   const texture = [];
   for (let i = 0; i < 26; i++) {
-    const textureFrame = PIXI.Texture.fromFrame(
-      "Explosion_Sequence_A " + (i + 1) + ".png"
-    );
+    const textureFrame = PIXI.Texture.fromFrame("Explosion_Sequence_A " + (i + 1) + ".png");
     texture.push(textureFrame);
   }
 

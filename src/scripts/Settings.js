@@ -1,5 +1,3 @@
-import { settings } from "pixi.js/lib/core";
-
 function Settings() {}
 
 Settings.BUTTON_GREEN_LINE = 0x00ff99;
