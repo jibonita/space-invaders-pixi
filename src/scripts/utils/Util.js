@@ -12,20 +12,20 @@ Util.isLastColumn = function (node) {
   return node.x > this.width;
 };
 
-Util.calculateSpeed = function (value, direction) {
-  const animation = this.gridMove;
+// Util.calculateSpeed = function (value, direction) {
+//   const animation = this.gridMove;
 
-  const curToX = animation.vars.x;
-  const addnlS = Math.abs(value - curToX);
+//   const curToX = animation.vars.x;
+//   const addnlS = Math.abs(value - curToX);
 
-  const curS = Math.abs(animation._firstPT.c);
-  const passedS = animation.progress() * curS;
+//   const curS = Math.abs(animation._firstPT.c);
+//   const passedS = animation.progress() * curS;
 
-  const timeLeft = (curS - passedS + addnlS) / this.initialGridSpeed;
+//   const timeLeft = (curS - passedS + addnlS) / this.initialGridSpeed;
 
-  animation.kill();
-  return this.moveAliensGridRec(value, direction, timeLeft);
-};
+//   animation.kill();
+//   return this.moveAliensGridRec(value, direction, timeLeft);
+// };
 
 Util.drawMovementAreaBorders = function () {
   const graphic = new PIXI.Graphics();

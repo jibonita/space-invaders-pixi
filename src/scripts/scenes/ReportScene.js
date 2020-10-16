@@ -55,7 +55,7 @@ ReportScene.prototype.onStartGameOut = function (e) {
 };
 
 ReportScene.prototype.drawText = function () {
-  var style = new PIXI.TextStyle({
+  const style = new PIXI.TextStyle({
     fontFamily: "Arial",
     fontSize: 26,
     fontStyle: "italic",
@@ -67,7 +67,7 @@ ReportScene.prototype.drawText = function () {
     wordWrapWidth: 440,
   });
 
-  var font = new PIXI.Text(this.buttonLabel, style);
+  const font = new PIXI.Text(this.buttonLabel, style);
   font.x = 25;
 
   return font;

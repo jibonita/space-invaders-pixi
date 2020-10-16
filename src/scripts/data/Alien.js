@@ -12,7 +12,6 @@ Alien.prototype = Object.create(PIXI.Sprite.prototype);
 
 Alien.prototype.setInitialState = function () {
   this.scale.set(0.5);
-  this.vx = 0;
   this.canShoot = false;
   this.isDestroyed = false;
 };

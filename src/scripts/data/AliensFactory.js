@@ -77,7 +77,7 @@ AliensFactory.prototype.removeAliensGrid = function () {
 AliensFactory.prototype.deleteAlien = function (hitItem) {
   const child = this.removeAlienFromGrid(hitItem);
 
-  // TODO:: this.updateShootersAndBounds()
+  // TODO:: put the code below in this.updateShootersAndBounds()
   const aliensAboveHit = this.aliens.filter((elem) => elem.x === child.x);
   if (aliensAboveHit.length) {
     aliensAboveHit[0].canShoot = true;
@@ -160,12 +160,12 @@ AliensFactory.prototype.updateGridBounds = function (removedColumn) {
 };
 
 AliensFactory.prototype.moveAliensGrid = function () {
-  this.initialGridTrayectoryLength =
+  const initialGridTrayectoryLength =
     Settings.CANVAS_WIDTH -
     Settings.ALIENS_LEFT_RIGHT_MARGIN -
     this.width -
     Settings.ALIENS_INITIAL_X_POSITION;
-  this.initialGridSpeed = this.initialGridTrayectoryLength / Settings.ALIENS_INITIAL_GRID_MOVE_TIME;
+  this.initialGridSpeed = initialGridTrayectoryLength / Settings.ALIENS_INITIAL_GRID_MOVE_TIME;
 
   return this.moveAliensGridRec(
     Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION,
@@ -177,10 +177,12 @@ AliensFactory.prototype.moveAliensGrid = function () {
 AliensFactory.prototype.moveAliensGridRec = function (toX, dir, duration) {
   return TweenMax.to(this, duration, {
     x: toX,
-    y: "+=5",
+    // y: "+=5",
     data: { dir },
     ease: Power0.easeNone,
     onComplete: () => {
+      this.y += 5;
+
       toX = !dir
         ? Settings.ALIENS_INITIAL_X_POSITION - this.mostLeftX()
         : Settings.CANVAS_WIDTH - this.width - Settings.ALIENS_INITIAL_X_POSITION;

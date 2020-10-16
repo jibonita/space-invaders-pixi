@@ -28,6 +28,8 @@ HealthBar.prototype.setInitialState = function () {
     this.createBar(
       borderWidth,
       borderWidth,
+      // borderWidth / 2,
+      // borderWidth / 2,
       Settings.HEALTH_BAR_WIDTH - borderWidth,
       Settings.HEALTH_BAR_HEIGHT - borderWidth,
       0x19bb26
